@@ -2,7 +2,7 @@
 package routerbuilder
 
 import (
-	"excalibur/internal/handlers"
+	"excalibur/internal/handler"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -15,11 +15,11 @@ type RouterBuilder interface {
 
 type routerBuilder struct {
 	r  *mux.Router
-	hc handlers.HandlerCollection
+	hc handler.HandlerCollection
 }
 
 // New creates a new RouterBuilder instance
-func New(hc handlers.HandlerCollection) RouterBuilder {
+func New(hc handler.HandlerCollection) RouterBuilder {
 	router := mux.NewRouter()
 
 	return &routerBuilder{

@@ -1,11 +1,11 @@
-package handlers
+package handler
 
 import (
 	"errors"
-	"excalibur/internal/handlers/dto"
-	"excalibur/internal/handlers/errorhandler"
-	"excalibur/internal/handlers/hateoas"
-	"excalibur/internal/handlers/response"
+	"excalibur/internal/handler/dto"
+	"excalibur/internal/handler/errorhandler"
+	"excalibur/internal/handler/hateoas"
+	"excalibur/internal/handler/response"
 	"excalibur/internal/models"
 	"excalibur/internal/services"
 	"fmt"

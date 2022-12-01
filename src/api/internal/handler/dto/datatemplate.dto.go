@@ -1,7 +1,7 @@
 // Package dto for handling Data Transfer Objects for API requests and responses
 package dto
 
-import "excalibur/internal/handlers/hateoas"
+import "excalibur/internal/handler/hateoas"
 
 type baseDataTableDTO struct {
 	Name string `json:"name"`

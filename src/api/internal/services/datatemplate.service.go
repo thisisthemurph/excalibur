@@ -1,7 +1,7 @@
 package services
 
 import (
-	"excalibur/internal/handlers/errorhandler"
+	"excalibur/internal/handler/errorhandler"
 	"excalibur/internal/models"
 	"excalibur/internal/repository"
 	"log"

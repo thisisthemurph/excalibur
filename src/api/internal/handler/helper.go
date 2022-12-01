@@ -1,11 +1,11 @@
-package handlers
+package handler
 
 import (
 	"context"
 	"encoding/json"
 	"errors"
-	response "excalibur/internal/handlers/response"
-	"excalibur/internal/handlers/validate"
+	response "excalibur/internal/handler/response"
+	"excalibur/internal/validate"
 	"fmt"
 	"io"
 	"log"
@@ -148,3 +148,13 @@ func getDtoFromJSONBody[T any](w http.ResponseWriter, r *http.Request) (*T, erro
 
 	return &obj, nil
 }
+
+// Generic Swagger documentation
+
+// NoContentResponse a response containing no content
+// swagger:response noContent
+type NoContentResponse struct{}
+
+// PlainTextResponse a text/plain response
+// swagger:response textPlain
+type unauthorized string

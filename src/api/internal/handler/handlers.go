@@ -1,5 +1,5 @@
 // Package handlers for the web API
-package handlers
+package handler
 
 import (
 	"excalibur/internal/services"

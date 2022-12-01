@@ -1,7 +1,7 @@
 package response
 
 import (
-	"excalibur/internal/handlers/httperror"
+	"excalibur/internal/handler/httperror"
 	"log"
 	"net/http"
 )
@@ -16,7 +16,7 @@ func Respond(w http.ResponseWriter, i interface{}, status int) {
 	}
 }
 
-func ReturnError(w http.ResponseWriter, message error, status int, ) {
+func ReturnError(w http.ResponseWriter, message error, status int) {
 	httpErr := httperror.New(status, message.Error())
 	Respond(w, httpErr, status)
 }

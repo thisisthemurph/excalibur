@@ -1,4 +1,4 @@
-package handlers
+package handler
 
 import (
 	"excalibur/internal/upload"
