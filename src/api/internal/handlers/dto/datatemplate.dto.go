@@ -10,7 +10,7 @@ type baseDataTableDTO struct {
 // NewDataTemplateDTO for creating a new DT
 type NewDataTemplateDTO struct {
 	baseDataTableDTO
-	columns []DataTemplateColumnDTO
+	columns []baseDataTemplateColumnDTO
 }
 
 // UpdateDataTemplateDTO for updating an existing DT

@@ -28,3 +28,23 @@ func (h H) WithLink(link L) H {
 	links := append(h.Links, link)
 	return H{Links: links}
 }
+
+// WithGetLink chain method to add a link with type `GET` to the given Hateoas object
+func (h H) WithGetLink(link L) H {
+	return h.WithLink(L{Href: link.Href, Rel: link.Rel, Type: "GET"})
+}
+
+// WithPutLink chain method to add a link with type `PUT` to the given Hateoas object
+func (h H) WithPutLink(link L) H {
+	return h.WithLink(L{Href: link.Href, Rel: link.Rel, Type: "PUT"})
+}
+
+// WithPostLink chain method to add a link with type `POST` to the given Hateoas object
+func (h H) WithPostLink(link L) H {
+	return h.WithLink(L{Href: link.Href, Rel: link.Rel, Type: "POST"})
+}
+
+// WithDeleteLink chain method to add a link with type `DELETE` to the given Hateoas object
+func (h H) WithDeleteLink(link L) H {
+	return h.WithLink(L{Href: link.Href, Rel: link.Rel, Type: "DELETE"})
+}

@@ -13,6 +13,7 @@ type DataTemplateService interface {
 	GetDataTemplateByID(dataTemplateID string) (*models.DataTemplate, error)
 	CreateDataTemplate(dt models.DataTemplate) (string, error)
 	UpdateDataTemplateByID(dataTemplateID string, name string) error
+	AddNewColumn(dataTemplateID string, column models.DataTemplateColumn) (*models.DataTemplate, error)
 	DeleteDataTemplateByID(id string) (*models.DataTemplate, error)
 }
 
@@ -60,6 +61,16 @@ func (s *dataTemplateService) UpdateDataTemplateByID(dataTemplateID string, name
 	}
 
 	return nil
+}
+
+func (s *dataTemplateService) AddNewColumn(dataTemplateID string, column models.DataTemplateColumn) (*models.DataTemplate, error) {
+	dt, err := s.dataTemplateQuery.AddNewColumn(dataTemplateID, column)
+
+	if err != nil || (err == nil && dt == nil) {
+		return nil, errorhandler.ErrorNotFound
+	}
+
+	return dt, nil
 }
 
 func (s *dataTemplateService) DeleteDataTemplateByID(id string) (*models.DataTemplate, error) {

@@ -42,4 +42,8 @@ func (b *routerBuilder) buildDataTemplateRouter() {
 	b.r.HandleFunc("/datatemplate", h.CreateDataTemplate).Methods(http.MethodPost)
 	b.r.HandleFunc("/datatemplate/{id:[0-9a-f]{24}}", h.UpdateDataTemplateByID).Methods(http.MethodPut)
 	b.r.HandleFunc("/datatemplate/{id:[0-9a-f]{24}}", h.DeleteDataTemplateByID).Methods(http.MethodDelete)
+
+	// Column configuration and updates
+
+	b.r.HandleFunc("/datatemplate/{id:[0-9a-f]{24}}/column", h.AddNewColumn).Methods(http.MethodPost)
 }

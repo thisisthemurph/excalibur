@@ -9,6 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // DataTemplateQuery queries for DataTemplate objects
@@ -17,6 +18,7 @@ type DataTemplateQuery interface {
 	GetDataTemplateByID(dataTemplateID string) (*models.DataTemplate, error)
 	CreateDataTemplate(dt models.DataTemplate) (string, error)
 	UpdateDataTemplate(dataTemplateID string, name string) (*string, error)
+	AddNewColumn(dataTemplateID string, column models.DataTemplateColumn) (*models.DataTemplate, error)
 	DeleteDataTemplateByID(dataTemplateID string) (*models.DataTemplate, error)
 }
 
@@ -114,6 +116,41 @@ func (q *dataTemplateQuery) UpdateDataTemplate(dataTemplateID string, name strin
 	}
 
 	return &dataTemplateID, nil
+}
+
+func (q *dataTemplateQuery) AddNewColumn(dataTemplateID string, column models.DataTemplateColumn) (*models.DataTemplate, error) {
+	id, err := primitive.ObjectIDFromHex(dataTemplateID)
+	if err != nil {
+		fmt.Println("Unknown ID, could not convert " + dataTemplateID + " into a mongo primitive.ObjectID")
+		log.Fatal(err)
+		return nil, err
+	}
+
+	filter := bson.M{"_id": id}
+	update := bson.M{"$push": bson.M{
+		"columns": bson.M{
+			"name": column.Name,
+		},
+	}}
+
+	var result models.DataTemplate
+	err = q.dataTemplateCollection.FindOneAndUpdate(
+		context.TODO(),
+		filter,
+		update,
+		options.FindOneAndUpdate().SetReturnDocument(options.After),
+	).Decode(&result)
+
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			fmt.Println("repo - could not find document", dataTemplateID)
+			return nil, nil
+		}
+
+		return nil, err
+	}
+
+	return &result, nil
 }
 
 func (q *dataTemplateQuery) DeleteDataTemplateByID(dataTemplateID string) (*models.DataTemplate, error) {
