@@ -1,4 +1,5 @@
-package handler
+// Package request contains helper functions for use in API handlers
+package request
 
 import (
 	"context"
@@ -17,20 +18,20 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// Fetches the given parameter from the HTTP request object
-// Returns a string value and a success boolean
-func getParamFomRequest(r *http.Request, param string) (string, bool) {
+// GetParamFomRequest return specified param from request, returns a string value and a success boolean
+func GetParamFomRequest(r *http.Request, param string) (string, bool) {
 	params := mux.Vars(r)
 	value, exists := params[param]
 	if !exists {
-		log.Printf("the param %s does not exist in the request\n", param)
+		log.Fatalf("the param %s does not exist in the request\n", param)
 	}
 
 	return value, exists
 }
 
-func getUintParamFomRequest(r *http.Request, param string) (uint, bool) {
-	value, exists := getParamFomRequest(r, param)
+// GetUintParamFomRequest return specified param from request as a uint; return 0 if fails to parse
+func GetUintParamFomRequest(r *http.Request, param string) (uint, bool) {
+	value, exists := GetParamFomRequest(r, param)
 	if !exists {
 		return 0, false
 	}
@@ -44,7 +45,8 @@ func getUintParamFomRequest(r *http.Request, param string) (uint, bool) {
 	return uint(p), exists
 }
 
-func getStructFromContext[T any](ctx context.Context, key interface{}) T {
+// GetStructFromContext retrieves the specific struct from the context
+func GetStructFromContext[T any](ctx context.Context, key interface{}) T {
 	return ctx.Value(key).(T)
 }
 
@@ -55,6 +57,25 @@ type malformedRequest struct {
 
 func (mr *malformedRequest) Error() string {
 	return mr.err.Error()
+}
+
+// GetDtoFromJSONBody gets the specified struct from the JSON body
+func GetDtoFromJSONBody[T any](w http.ResponseWriter, r *http.Request) (*T, error) {
+	var obj T
+	err := decodeJSONBody(w, r, &obj)
+	if err != nil {
+		handleMalformedJSONError(w, err)
+		return nil, err
+	}
+
+	err = validate.Struct(obj)
+	if err != nil {
+		log.Println("JSON Body validation error: ", err.Error())
+		response.ReturnError(w, err, http.StatusBadRequest)
+		return nil, err
+	}
+
+	return &obj, nil
 }
 
 // Attempts to decode the JSON body, returning a custom malformed request error type.
@@ -130,31 +151,3 @@ func handleMalformedJSONError(w http.ResponseWriter, err error) {
 		response.ReturnError(w, errors.New(http.StatusText(http.StatusInternalServerError)), http.StatusInternalServerError)
 	}
 }
-
-func getDtoFromJSONBody[T any](w http.ResponseWriter, r *http.Request) (*T, error) {
-	var obj T
-	err := decodeJSONBody(w, r, &obj)
-	if err != nil {
-		handleMalformedJSONError(w, err)
-		return nil, err
-	}
-
-	err = validate.Struct(obj)
-	if err != nil {
-		log.Println("JSON Body validation error: ", err.Error())
-		response.ReturnError(w, err, http.StatusBadRequest)
-		return nil, err
-	}
-
-	return &obj, nil
-}
-
-// Generic Swagger documentation
-
-// NoContentResponse a response containing no content
-// swagger:response noContent
-type NoContentResponse struct{}
-
-// PlainTextResponse a text/plain response
-// swagger:response textPlain
-type unauthorized string

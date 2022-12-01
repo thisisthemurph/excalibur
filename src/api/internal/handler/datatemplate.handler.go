@@ -5,6 +5,7 @@ import (
 	"excalibur/internal/handler/dto"
 	"excalibur/internal/handler/errorhandler"
 	"excalibur/internal/handler/hateoas"
+	"excalibur/internal/handler/request"
 	"excalibur/internal/handler/response"
 	"excalibur/internal/models"
 	"excalibur/internal/services"
@@ -49,7 +50,7 @@ func (d *dataTemplate) GetAllDataTemplates(w http.ResponseWriter, r *http.Reques
 }
 
 func (d *dataTemplate) GetDataTemplateByID(w http.ResponseWriter, r *http.Request) {
-	id, ok := getParamFomRequest(r, "id")
+	id, ok := request.GetParamFomRequest(r, "id")
 
 	if !ok {
 		response.ReturnError(w, errors.New("could not determine url parameter for DataTemplate ID"), http.StatusBadRequest)
@@ -65,7 +66,7 @@ func (d *dataTemplate) GetDataTemplateByID(w http.ResponseWriter, r *http.Reques
 }
 
 func (d *dataTemplate) CreateDataTemplate(w http.ResponseWriter, r *http.Request) {
-	template, err := getDtoFromJSONBody[dto.NewDataTemplateDTO](w, r)
+	template, err := request.GetDtoFromJSONBody[dto.NewDataTemplateDTO](w, r)
 	if err != nil {
 		return
 	}
@@ -95,13 +96,13 @@ func (d *dataTemplate) CreateDataTemplate(w http.ResponseWriter, r *http.Request
 }
 
 func (d *dataTemplate) UpdateDataTemplateByID(w http.ResponseWriter, r *http.Request) {
-	id, ok := getParamFomRequest(r, "id")
+	id, ok := request.GetParamFomRequest(r, "id")
 	if !ok {
 		response.ReturnError(w, errors.New("could not determine url parameter for DataTemplate ID"), http.StatusBadRequest)
 		return
 	}
 
-	update, err := getDtoFromJSONBody[dto.UpdateDataTemplateDTO](w, r)
+	update, err := request.GetDtoFromJSONBody[dto.UpdateDataTemplateDTO](w, r)
 	if err != nil {
 		return
 	}
@@ -125,13 +126,13 @@ func (d *dataTemplate) UpdateDataTemplateByID(w http.ResponseWriter, r *http.Req
 }
 
 func (d *dataTemplate) AddNewColumn(w http.ResponseWriter, r *http.Request) {
-	id, ok := getParamFomRequest(r, "id")
+	id, ok := request.GetParamFomRequest(r, "id")
 	if !ok {
 		response.ReturnError(w, errors.New("could not determine url parameter for DataTemplate ID"), http.StatusBadRequest)
 		return
 	}
 
-	column, err := getDtoFromJSONBody[dto.NewDataTemplateColumnDTO](w, r)
+	column, err := request.GetDtoFromJSONBody[dto.NewDataTemplateColumnDTO](w, r)
 	if err != nil {
 		return
 	}
@@ -158,7 +159,7 @@ func (d *dataTemplate) AddNewColumn(w http.ResponseWriter, r *http.Request) {
 }
 
 func (d *dataTemplate) DeleteDataTemplateByID(w http.ResponseWriter, r *http.Request) {
-	id, ok := getParamFomRequest(r, "id")
+	id, ok := request.GetParamFomRequest(r, "id")
 
 	if !ok {
 		response.ReturnError(w, errors.New("could not determine url parameter for DataTemplate ID"), http.StatusBadRequest)
