@@ -40,6 +40,11 @@ func NewDataTemplateHandler(s services.DataTemplateService, logger log.Logger) D
 	}
 }
 
+// swagger:route GET /datatemplate datatemplate listDataTemplates
+// Return a list of all datatemplates from the database
+//
+//	Responses:
+//		200: dataTemplateListResponse
 func (d *dataTemplate) GetAllDataTemplates(w http.ResponseWriter, r *http.Request) {
 	templates, err := d.service.GetAllDataTemplates()
 	if status := d.eh.HandleAPIError(w, err); status != http.StatusOK {
@@ -49,6 +54,12 @@ func (d *dataTemplate) GetAllDataTemplates(w http.ResponseWriter, r *http.Reques
 	response.Respond(w, templates, http.StatusOK)
 }
 
+// swagger:route GET /datatemplate/{id} datatemplate getDataTemplateByID
+//
+// Gets a DataTemplate by the specified ID
+//
+//	Responses:
+//		200: dataTemplateResponse
 func (d *dataTemplate) GetDataTemplateByID(w http.ResponseWriter, r *http.Request) {
 	id, ok := request.GetParamFomRequest(r, "id")
 
@@ -65,8 +76,14 @@ func (d *dataTemplate) GetDataTemplateByID(w http.ResponseWriter, r *http.Reques
 	response.Respond(w, template, http.StatusOK)
 }
 
+// swagger:route POST /datatemplate datatemplate createDataTemplate
+// Create a new datatemplate
+//
+// responses:
+//	200: dataTemplateResponse
+
 func (d *dataTemplate) CreateDataTemplate(w http.ResponseWriter, r *http.Request) {
-	template, err := request.GetDtoFromJSONBody[dto.NewDataTemplateDTO](w, r)
+	template, err := request.GetDtoFromJSONBody[dto.DataTemplateDTO](w, r)
 	if err != nil {
 		return
 	}
@@ -95,6 +112,12 @@ func (d *dataTemplate) CreateDataTemplate(w http.ResponseWriter, r *http.Request
 	response.Respond(w, result, http.StatusCreated)
 }
 
+// swagger:route PUT /datatemplate/{id} datatemplate updateDataTemplate
+// Update a products details
+//
+// responses:
+//	200: hateoasWithIdResponse
+
 func (d *dataTemplate) UpdateDataTemplateByID(w http.ResponseWriter, r *http.Request) {
 	id, ok := request.GetParamFomRequest(r, "id")
 	if !ok {
@@ -102,7 +125,7 @@ func (d *dataTemplate) UpdateDataTemplateByID(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	update, err := request.GetDtoFromJSONBody[dto.UpdateDataTemplateDTO](w, r)
+	update, err := request.GetDtoFromJSONBody[dto.DataTemplateDTO](w, r)
 	if err != nil {
 		return
 	}
@@ -125,6 +148,12 @@ func (d *dataTemplate) UpdateDataTemplateByID(w http.ResponseWriter, r *http.Req
 	response.Respond(w, result, http.StatusOK)
 }
 
+// swagger:route POST /datatemplate/{id} datatemplate addNewColumnToDataTemplate
+// Update a products details
+//
+// responses:
+//	200: hateoasWithIdResponse
+
 func (d *dataTemplate) AddNewColumn(w http.ResponseWriter, r *http.Request) {
 	id, ok := request.GetParamFomRequest(r, "id")
 	if !ok {
@@ -132,7 +161,7 @@ func (d *dataTemplate) AddNewColumn(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	column, err := request.GetDtoFromJSONBody[dto.NewDataTemplateColumnDTO](w, r)
+	column, err := request.GetDtoFromJSONBody[dto.DataTemplateColumnDTO](w, r)
 	if err != nil {
 		return
 	}
@@ -157,6 +186,12 @@ func (d *dataTemplate) AddNewColumn(w http.ResponseWriter, r *http.Request) {
 
 	response.Respond(w, result, http.StatusOK)
 }
+
+// swagger:route POST /datatemplate/{id} datatemplate deleteDataTemplate
+// Delete the datatemplate associated with the given ID
+//
+// responses:
+//	200: dataTemplateResponse
 
 func (d *dataTemplate) DeleteDataTemplateByID(w http.ResponseWriter, r *http.Request) {
 	id, ok := request.GetParamFomRequest(r, "id")

@@ -1,4 +1,18 @@
-// Package main, the main entrance into the programme
+// Package main entrypoint to the API
+//
+// Documentation for Excalibur API
+//
+//	Schemes: http
+//	BasePath: /
+//	Version: 1.0.0
+//
+//	Consumes:
+//	- application/json
+//
+//	Produces:
+//	- application/json
+//
+// swagger:meta
 package main
 
 import (
@@ -23,7 +37,7 @@ func main() {
 	log.Fatal(srv.ListenAndServe())
 }
 
-func createServer(hc handler.HandlerCollection) *http.Server {
+func createServer(hc handler.Collection) *http.Server {
 	rb := routerbuilder.New(hc)
 	r := rb.Init()
 

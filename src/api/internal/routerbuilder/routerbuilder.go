@@ -5,6 +5,7 @@ import (
 	"excalibur/internal/handler"
 	"net/http"
 
+	"github.com/go-openapi/runtime/middleware"
 	"github.com/gorilla/mux"
 )
 
@@ -15,11 +16,11 @@ type RouterBuilder interface {
 
 type routerBuilder struct {
 	r  *mux.Router
-	hc handler.HandlerCollection
+	hc handler.Collection
 }
 
 // New creates a new RouterBuilder instance
-func New(hc handler.HandlerCollection) RouterBuilder {
+func New(hc handler.Collection) RouterBuilder {
 	router := mux.NewRouter()
 
 	return &routerBuilder{
@@ -29,6 +30,7 @@ func New(hc handler.HandlerCollection) RouterBuilder {
 }
 
 func (b *routerBuilder) Init() *mux.Router {
+	b.buildDocsRouter()
 	b.buildDataTemplateRouter()
 
 	return b.r
@@ -46,4 +48,16 @@ func (b *routerBuilder) buildDataTemplateRouter() {
 	// Column configuration and updates
 
 	b.r.HandleFunc("/datatemplate/{id:[0-9a-f]{24}}/column", h.AddNewColumn).Methods(http.MethodPost)
+}
+
+func (b *routerBuilder) buildDocsRouter() {
+	opts := middleware.RedocOpts{
+		Title:   "Excalibur API Documentation",
+		SpecURL: "/swagger.yaml",
+	}
+
+	sh := middleware.Redoc(opts, nil)
+
+	b.r.Handle("/docs", sh).Methods(http.MethodGet)
+	b.r.Handle("/swagger.yaml", http.FileServer(http.Dir("./")))
 }

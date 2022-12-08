@@ -1,4 +1,4 @@
-// Package handlers for the web API
+// Package handler for the web API
 package handler
 
 import (
@@ -6,16 +6,16 @@ import (
 	"log"
 )
 
-// HandlerCollection a struct for organizing handlers
-type HandlerCollection struct {
+// Collection a struct for organizing handlers
+type Collection struct {
 	DataTemplateHandler DataTemplate
 }
 
 // NewHandlerCollection instantiates a new handlers collection
-func NewHandlerCollection(sc services.ServiceCollection, l log.Logger) HandlerCollection {
+func NewHandlerCollection(sc services.ServiceCollection, l log.Logger) Collection {
 	dataTemplateHandler := NewDataTemplateHandler(sc.DataTemplate, l)
 
-	return HandlerCollection{
+	return Collection{
 		DataTemplateHandler: dataTemplateHandler,
 	}
 }

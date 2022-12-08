@@ -3,19 +3,20 @@ package dto
 
 import "excalibur/internal/handler/hateoas"
 
-type baseDataTableDTO struct {
+// DataTemplateDTO represents the a data template structure
+//
+// swagger:model
+type DataTemplateDTO struct {
+	// the name of the DataTemplate
+	//
+	// required: true
+	// example: Registered vehicles data table
 	Name string `json:"name"`
-}
 
-// NewDataTemplateDTO for creating a new DT
-type NewDataTemplateDTO struct {
-	baseDataTableDTO
-	columns []baseDataTemplateColumnDTO
-}
-
-// UpdateDataTemplateDTO for updating an existing DT
-type UpdateDataTemplateDTO struct {
-	baseDataTableDTO
+	// the list of columns associated with the DataTemplate
+	//
+	// required: true
+	Columns []DataTemplateColumnDTO `json:"columns"`
 }
 
 // DataTemplateWithHateoasDTO for returning a result with resource pointer
