@@ -1,7 +1,5 @@
-import { useState } from "react";
 import TemplateConfigForm from "../../components/TemplateConfig/form";
 import { FormSchemaType } from "../../components/TemplateConfig/z";
-import "./ColumnConfig.scss";
 
 const formDefaultConfiguration: FormSchemaType = {
   tableName: "Company registered vehicles",
