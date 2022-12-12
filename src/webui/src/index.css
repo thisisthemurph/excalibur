@@ -3,6 +3,26 @@
 @tailwind utilities;
 
 @layer base {
+  h1 {
+    @apply text-indigo-500 text-3xl;
+  }
+
+  h2 {
+    @apply text-indigo-400 text-2xl;
+  }
+
+  h3 {
+    @apply text-gray-700 text-xl;
+  }
+
+  h4 {
+    @apply text-gray-500 text-lg;
+  }
+
+  a {
+    @apply text-indigo-500 underline underline-offset-2 hover:text-indigo-400 active:outline-dashed focus:ring focus:ring-indigo-400 focus:ring-opacity-50 focus:ring-offset-4 hover:no-underline visited:text-gray-500;
+  }
+
   [type="text"],
   [type="email"],
   [type="url"],
@@ -27,7 +47,7 @@
   }
 
   .btn {
-    @apply cursor-pointer inline-block px-6 py-2  tracking-wide font-semibold text-sm uppercase border rounded-md shadow-lg focus:outline-none focus:ring focus:ring-offset-2  sm:text-base;
+    @apply cursor-pointer inline-block px-6 py-2 tracking-wide font-semibold text-sm uppercase border rounded-md shadow-lg focus:outline-none focus:ring focus:ring-offset-2  sm:text-base;
   }
 
   .btn.btn__basic {

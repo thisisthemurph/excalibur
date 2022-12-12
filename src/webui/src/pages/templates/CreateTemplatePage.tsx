@@ -35,7 +35,7 @@ const formDefaultConfiguration: FormSchemaType = {
 const CreateTemplatePage = () => {
   return (
     <>
-      <h1>Create a new template</h1>
+      <h1 className="px-wrap">Create a new template</h1>
       <TemplateConfigForm config={formDefaultConfiguration} />
     </>
   );

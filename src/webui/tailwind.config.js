@@ -11,6 +11,9 @@ module.exports = {
           DEFAULT: "rgb(79 70 229)", // indigo-600
         },
       },
+      spacing: {
+        wrap: "2rem",
+      },
     },
   },
   plugins: [require("@tailwindcss/forms")],

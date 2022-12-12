@@ -38,7 +38,7 @@ const TemplateConfigForm = ({ config }: Props) => {
   };
 
   return (
-    <form className="px-4 my-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+    <form className="px-wrap my-16 space-y-6" onSubmit={handleSubmit(onSubmit)}>
       <h3>Data table configuration</h3>
 
       <section className="form__section table-name">
