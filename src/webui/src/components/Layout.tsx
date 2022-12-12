@@ -1,15 +1,13 @@
 import { Link, Outlet } from "react-router-dom";
 import Logo from "./Logo";
+import Nav from "./Nav";
 
 const Layout = () => {
   return (
     <main>
       <header className="flex justify-between px-wrap py-wrap">
         <Logo />
-        <nav>
-          <Link to="/">Home</Link>
-          <Link to="/template">Templates</Link>
-        </nav>
+        <Nav />
       </header>
 
       <section>
