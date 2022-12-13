@@ -6,22 +6,22 @@ import CreateTemplatePage from "./pages/templates/CreateTemplatePage";
 import TemplateHomePage from "./pages/templates/TemplateHomePage";
 
 export const routes = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout />,
-    children: [
-      {
-        index: true,
-        element: <HomePage />,
-      },
-      {
-        path: "/template",
-        element: <TemplateHomePage />,
-      },
-      {
-        path: "/template/create",
-        element: <CreateTemplatePage />,
-      },
-    ],
-  },
+	{
+		path: "/",
+		element: <Layout />,
+		children: [
+			{
+				index: true,
+				element: <HomePage />,
+			},
+			{
+				path: "/template",
+				element: <TemplateHomePage />,
+			},
+			{
+				path: "/template/create",
+				element: <CreateTemplatePage />,
+			},
+		],
+	},
 ]);

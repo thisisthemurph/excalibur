@@ -1,0 +1,23 @@
+{
+  "semi": true,
+  "useTabs": false,
+  "tabWidth": 2,
+  "printWidth": 100,
+  "singleQuote": false,
+  "trailingComma": "all",
+  "overrides": [
+    {
+      "files": "*.ts",
+      "options": {
+        "useTabs": true
+      }
+    },
+    {
+      "files": "*.tsx",
+      "options": {
+        "useTabs": true,
+        "bracketSameLine": false
+      }
+    }
+  ]
+}
