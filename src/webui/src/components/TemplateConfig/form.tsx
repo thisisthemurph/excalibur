@@ -113,6 +113,7 @@ const TemplateConfigForm = ({ config }: Props) => {
         <button className="px-2" onClick={(e) => onAppendColumn(e)}>
           <PlusCircleIcon className="h-12 w-12 text-indigo-400 hover:text-indigo-600" />
         </button>
+
         <SubmitButton text="Create" />
       </footer>
     </form>
