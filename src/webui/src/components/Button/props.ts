@@ -7,4 +7,5 @@ export enum ButtonType {
 export interface ButtonProps {
 	text?: string;
 	type?: ButtonType;
+	onClick?: () => void;
 }
