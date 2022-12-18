@@ -129,7 +129,9 @@ func (q *dataTemplateQuery) AddNewColumn(dataTemplateID string, column models.Da
 	filter := bson.M{"_id": id}
 	update := bson.M{"$push": bson.M{
 		"columns": bson.M{
-			"name": column.Name,
+			"originalName": column.OriginalName,
+			"prettyName":   column.PrettyName,
+			"dataType":     column.DataType,
 		},
 	}}
 

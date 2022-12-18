@@ -89,6 +89,14 @@ func (d *dataTemplate) CreateDataTemplate(w http.ResponseWriter, r *http.Request
 	}
 
 	var columns []models.DataTemplateColumn
+	for _, c := range template.Columns {
+		columns = append(columns, models.DataTemplateColumn{
+			OriginalName: c.OriginalName,
+			PrettyName:   c.PrettyName,
+			DataType:     c.DataType,
+		})
+	}
+
 	newTemplate := models.DataTemplate{
 		Name:    template.Name,
 		Columns: columns,
@@ -167,7 +175,9 @@ func (d *dataTemplate) AddNewColumn(w http.ResponseWriter, r *http.Request) {
 	}
 
 	dtc := models.DataTemplateColumn{
-		Name: column.Name,
+		OriginalName: column.OriginalName,
+		PrettyName:   column.PrettyName,
+		DataType:     column.DataType,
 	}
 
 	_, err = d.service.AddNewColumn(id, dtc)
