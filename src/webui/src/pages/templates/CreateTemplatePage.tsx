@@ -1,7 +1,7 @@
-import { FormSchemaType } from "../../components/TemplateConfig/types";
 import TemplateConfigForm from "../../components/TemplateConfig/form";
+import { DataTemplate } from "../../types";
 
-const formDefaultConfiguration: FormSchemaType = {
+const formDefaultConfiguration: DataTemplate = {
 	name: "Company registered vehicles",
 	columns: [
 		{

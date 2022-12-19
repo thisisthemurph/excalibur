@@ -4,13 +4,25 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
 
-import { DataTypeEnum, defaultColumnObject, FormSchema, FormSchemaType } from "./types";
-import { createDataTemplate } from "../../api/dataTemplate";
 import { useMutation } from "react-query";
+import { createDataTemplate } from "../../api/dataTemplate";
+
+import {
+	ColumnDataTypeEnum,
+	DataTemplate,
+	DataTemplateColumn,
+	DataTemplateSchema,
+} from "../../types";
 
 interface Props {
-	config: FormSchemaType;
+	config: DataTemplate;
 }
+
+const defaultColumnObject: DataTemplateColumn = {
+	dataType: ColumnDataTypeEnum.Values.String,
+	originalName: "",
+	prettyName: "",
+};
 
 const TemplateConfigForm = ({ config }: Props) => {
 	const { mutateAsync, isLoading } = useMutation(createDataTemplate);
@@ -20,8 +32,8 @@ const TemplateConfigForm = ({ config }: Props) => {
 		register,
 		handleSubmit,
 		formState: { errors, isSubmitting },
-	} = useForm<FormSchemaType>({
-		resolver: zodResolver(FormSchema),
+	} = useForm<DataTemplate>({
+		resolver: zodResolver(DataTemplateSchema),
 		defaultValues: config,
 	});
 
@@ -31,7 +43,7 @@ const TemplateConfigForm = ({ config }: Props) => {
 		rules: { minLength: 1 },
 	});
 
-	const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
+	const onSubmit: SubmitHandler<DataTemplate> = async (data) => {
 		await mutateAsync({ ...data });
 	};
 
@@ -80,7 +92,7 @@ const TemplateConfigForm = ({ config }: Props) => {
 						<tr key={id} className="my-2">
 							<td>
 								<select {...register(`columns.${index}.dataType`)} defaultValue={dataType}>
-									{DataTypeEnum.options.map((t) => (
+									{ColumnDataTypeEnum.options.map((t) => (
 										<option key={`${t}-${id}`} value={t}>
 											{t}
 										</option>

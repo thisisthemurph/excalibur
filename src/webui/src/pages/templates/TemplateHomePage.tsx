@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { getAllDataTemplates } from "../../api/dataTemplate";
 
 import { useQuery } from "react-query";
-import DataTemplateList from "../../components/DataTemplateList";
+import DataTemplateGroup from "../../components/DataTemplateGroup";
 
 const TemplateHomePage = () => {
 	const { isLoading, isError, data } = useQuery("templates", getAllDataTemplates);
@@ -14,7 +14,7 @@ const TemplateHomePage = () => {
 				<Link to="/template/create">Create a new template</Link>
 
 				{data !== undefined && (
-					<DataTemplateList templates={data} isLoading={isLoading} isError={isError} />
+					<DataTemplateGroup templates={data} isLoading={isLoading} isError={isError} />
 				)}
 			</main>
 		</>

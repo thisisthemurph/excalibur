@@ -1,8 +1,8 @@
-import { DataTemplateModel } from "../api/types";
+import { DataTemplate } from "../types";
 
-type Props = { template: DataTemplateModel };
+type Props = { template: DataTemplate };
 
-const DataTemplateListItem = ({ template }: Props) => {
+const DataTemplateGroupItem = ({ template }: Props) => {
 	return (
 		<div className="border px-4 py-4 bg-gray-300 rounded">
 			<h3 className="mb-2">{template.name}</h3>
@@ -14,4 +14,4 @@ const DataTemplateListItem = ({ template }: Props) => {
 	);
 };
 
-export default DataTemplateListItem;
+export default DataTemplateGroupItem;
