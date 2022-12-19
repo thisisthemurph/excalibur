@@ -53,7 +53,7 @@ const TemplateConfigForm = ({ config }: Props) => {
 	};
 
 	return (
-		<form className="px-wrap my-16 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+		<form className="my-16 space-y-6 px-wrap" onSubmit={handleSubmit(onSubmit)}>
 			<h3>Data table configuration</h3>
 
 			<pre>{JSON.stringify({ errors, isSubmitting }, null, 2)}</pre>
@@ -65,7 +65,7 @@ const TemplateConfigForm = ({ config }: Props) => {
 				<input
 					type="text"
 					id="tableName"
-					className="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+					className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
 					{...register("name")}
 				/>
 			</section>
@@ -80,10 +80,10 @@ const TemplateConfigForm = ({ config }: Props) => {
 
 				<thead>
 					<tr>
-						<th className="text-gray-700 font-normal text-left pb-2 pl-2">Data type</th>
-						<th className="text-gray-700 font-normal text-left pb-2 pl-2">Original name</th>
-						<th className="text-gray-700 font-normal text-left pb-2 pl-2">Pretty name</th>
-						<th className="text-gray-700 font-normal text-left pb-2 pl-2">&nbsp;</th>
+						<th className="pb-2 pl-2 text-left font-normal text-gray-700">Data type</th>
+						<th className="pb-2 pl-2 text-left font-normal text-gray-700">Original name</th>
+						<th className="pb-2 pl-2 text-left font-normal text-gray-700">Pretty name</th>
+						<th className="pb-2 pl-2 text-left font-normal text-gray-700">&nbsp;</th>
 					</tr>
 				</thead>
 
@@ -126,7 +126,7 @@ const TemplateConfigForm = ({ config }: Props) => {
 				</tbody>
 			</table>
 
-			<footer className="flex gap-1 justify-between">
+			<footer className="flex justify-between gap-1">
 				<button className="px-2" onClick={(e) => onAppendColumn(e)}>
 					<PlusCircleIcon className="h-12 w-12 text-indigo-400 hover:text-indigo-600" />
 				</button>

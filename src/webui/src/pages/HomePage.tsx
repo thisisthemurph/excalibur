@@ -1,6 +1,6 @@
 const HomePage = () => {
 	return (
-		<div className="px-wrap my-wrap">
+		<div className="my-wrap px-wrap">
 			<h1>Home</h1>
 		</div>
 	);
