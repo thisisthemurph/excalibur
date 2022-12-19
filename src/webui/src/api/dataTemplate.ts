@@ -1,15 +1,10 @@
-import { z } from "zod";
-
-const DataTemplateColumn = z.object({
-	name: z.string(),
-});
-
-const DataTemplate = z.object({
-	name: z.string(),
-	columns: z.array(DataTemplateColumn),
-});
-
-type DataTemplateModel = z.infer<typeof DataTemplate>;
+import {
+	DataTemplate,
+	DataTemplateList,
+	DataTemplateListModel,
+	DataTemplateModel,
+	HateoasResponseType,
+} from "./types";
 
 export async function createNewDataTemplate(
 	dt: DataTemplateModel,
@@ -30,22 +25,26 @@ export async function createNewDataTemplate(
 		},
 	};
 
-	return fetch(url, config).then(async (response) => {
-		if (response.ok) {
-			const result = DataTemplate.safeParse(await response.json());
-			if (!result.success) {
-				return "Unexpected result returned";
+	return fetch(url, config)
+		.then(async (response) => {
+			if (response.ok) {
+				return response.json();
 			}
 
-			return result.data;
-		} else {
-			return response.statusText;
-		}
-	});
+			throw Error(response.statusText);
+		})
+		.then(async (data: HateoasResponseType) => {
+			console.log({ data });
+			return data;
+		})
+		.catch((e) => {
+			console.error(e);
+			return e;
+		});
 }
 
-export async function getDataTemplate(id: string): Promise<DataTemplateModel | null> {
-	const url = `http://localhost:8000/datatemplate/${id}`;
+export async function getAllDataTemplates(): Promise<DataTemplateListModel> {
+	const url = "http://localhost:8000/datatemplate";
 
 	const config: RequestInit = {
 		method: "GET",
@@ -57,13 +56,42 @@ export async function getDataTemplate(id: string): Promise<DataTemplateModel | n
 
 	const response = await fetch(url, config);
 	if (!response.ok) {
-		return null;
+		return [];
 	}
 
-	const result = DataTemplate.safeParse(await response.json());
+	const result = DataTemplateList.safeParse(await response.json());
 	if (!result.success) {
-		return null;
+		console.error("The result is bad");
+		console.warn({ result });
+		return [];
 	}
 
 	return result.data;
+}
+
+export async function getDataTemplate(id: string): Promise<DataTemplateModel> {
+	const url = `http://localhost:8000/datatemplate/${id}`;
+
+	const config: RequestInit = {
+		method: "GET",
+		headers: {
+			Accept: "application-json",
+			"Content-Type": "application/json",
+		},
+	};
+
+	return fetch(url, config)
+		.then((response) => {
+			if (response.ok) {
+				return response.json();
+			}
+
+			throw new Error(response.statusText);
+		})
+		.then((data: HateoasResponseType) => {
+			return data;
+		})
+		.catch((e) => {
+			return e;
+		});
 }

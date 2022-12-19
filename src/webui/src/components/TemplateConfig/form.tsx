@@ -5,7 +5,8 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
 import { SubmitButton } from "../Button";
 
-import { DataTypeEnum, defaultColumnObject, FormSchema, FormSchemaType } from "./z";
+import { DataTypeEnum, defaultColumnObject, FormSchema, FormSchemaType } from "./types";
+import { createNewDataTemplate } from "../../api/dataTemplate";
 
 interface Props {
 	config: FormSchemaType;
@@ -29,7 +30,7 @@ const TemplateConfigForm = ({ config }: Props) => {
 	});
 
 	const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
-		console.log(data);
+		create(data);
 	};
 
 	const onAppendColumn = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -37,19 +38,36 @@ const TemplateConfigForm = ({ config }: Props) => {
 		append(defaultColumnObject);
 	};
 
+	const create = (formData: FormSchemaType): void => {
+		console.log({ formData });
+
+		createNewDataTemplate(formData)
+			.then((r) => {
+				if (typeof r === "string") {
+					throw new Error(r);
+				}
+
+				console.log("Created new template");
+				console.log({ r });
+			})
+			.catch((e) => console.error(e));
+	};
+
 	return (
 		<form className="px-wrap my-16 space-y-6" onSubmit={handleSubmit(onSubmit)}>
 			<h3>Data table configuration</h3>
 
-			<section className="form__section table-name">
-				<label htmlFor="tableName" className="inline-block pb-2 text-gray-700">
+			<pre>{JSON.stringify({ errors, isSubmitting }, null, 2)}</pre>
+
+			<section>
+				<label htmlFor="name" className="inline-block pb-2 text-gray-700">
 					Table name
 				</label>
 				<input
 					type="text"
 					id="tableName"
 					className="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-					{...register("tableName")}
+					{...register("name")}
 				/>
 			</section>
 
@@ -114,7 +132,9 @@ const TemplateConfigForm = ({ config }: Props) => {
 					<PlusCircleIcon className="h-12 w-12 text-indigo-400 hover:text-indigo-600" />
 				</button>
 
-				<SubmitButton text="Create" />
+				<div className="space-x-4">
+					<SubmitButton text="Create" />
+				</div>
 			</footer>
 		</form>
 	);

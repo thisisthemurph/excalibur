@@ -1,8 +1,8 @@
+import { FormSchemaType } from "../../components/TemplateConfig/types";
 import TemplateConfigForm from "../../components/TemplateConfig/form";
-import { FormSchemaType } from "../../components/TemplateConfig/z";
 
 const formDefaultConfiguration: FormSchemaType = {
-	tableName: "Company registered vehicles",
+	name: "Company registered vehicles",
 	columns: [
 		{
 			dataType: "String",

@@ -1,9 +1,6 @@
-import { FormColumnSchemaType } from "./z";
-
 interface Props {
 	index: number;
 	deleteColumn: (index: number) => void;
-	updateColumn: (index: number, updated: FormColumnSchemaType) => void;
 }
 
 enum DataType {
@@ -12,7 +9,7 @@ enum DataType {
 	Boolean = "Boolean",
 }
 
-const TemplateConfigColumn = ({ index, deleteColumn, updateColumn }: Props) => {
+const TemplateConfigColumn = ({ index, deleteColumn }: Props) => {
 	const handleDeleteColumn = () => {
 		deleteColumn(index);
 	};
@@ -27,17 +24,15 @@ const TemplateConfigColumn = ({ index, deleteColumn, updateColumn }: Props) => {
 					<option value={DataType.Boolean}>{DataType.Boolean}</option>
 				</select>
 			</section>
-
 			<section className="column__data">
 				<label htmlFor="col__actualName--0">Actual name</label>
 				<input type="text" id="col__actualName--0" />
 			</section>
-
 			<section className="column__data">
 				<label htmlFor="col__prettyName--0">Pretty name</label>
 				<input type="text" id="col__prettyName--0" />
 			</section>
-
+			vreg
 			<section className="column__data">
 				<button onClick={handleDeleteColumn}>Delete</button>
 			</section>

@@ -15,7 +15,7 @@ export const defaultColumnObject: FormColumnSchemaType = {
 };
 
 export const FormSchema = z.object({
-	tableName: z.string(),
+	name: z.string(),
 	columns: z.array(FormColumnSchema),
 });
 
