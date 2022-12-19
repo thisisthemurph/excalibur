@@ -3,16 +3,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
-import { SubmitButton } from "../Button";
 
 import { DataTypeEnum, defaultColumnObject, FormSchema, FormSchemaType } from "./types";
-import { createNewDataTemplate } from "../../api/dataTemplate";
+import { createDataTemplate } from "../../api/dataTemplate";
+import { useMutation } from "react-query";
 
 interface Props {
 	config: FormSchemaType;
 }
 
 const TemplateConfigForm = ({ config }: Props) => {
+	const { mutateAsync, isLoading } = useMutation(createDataTemplate);
+
 	const {
 		control,
 		register,
@@ -30,27 +32,12 @@ const TemplateConfigForm = ({ config }: Props) => {
 	});
 
 	const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
-		create(data);
+		await mutateAsync({ ...data });
 	};
 
 	const onAppendColumn = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
 		append(defaultColumnObject);
-	};
-
-	const create = (formData: FormSchemaType): void => {
-		console.log({ formData });
-
-		createNewDataTemplate(formData)
-			.then((r) => {
-				if (typeof r === "string") {
-					throw new Error(r);
-				}
-
-				console.log("Created new template");
-				console.log({ r });
-			})
-			.catch((e) => console.error(e));
 	};
 
 	return (
@@ -133,7 +120,7 @@ const TemplateConfigForm = ({ config }: Props) => {
 				</button>
 
 				<div className="space-x-4">
-					<SubmitButton text="Create" />
+					<input type="submit" className="btn btn__primary" value={isLoading ? "Saving" : "Save"} />
 				</div>
 			</footer>
 		</form>

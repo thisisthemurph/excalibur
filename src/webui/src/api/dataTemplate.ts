@@ -1,97 +1,49 @@
+import { defaultConfig, urls } from ".";
 import {
 	DataTemplate,
-	DataTemplateList,
 	DataTemplateListModel,
 	DataTemplateModel,
 	HateoasResponseType,
 } from "./types";
 
-export async function createNewDataTemplate(
-	dt: DataTemplateModel,
-): Promise<DataTemplateModel | string> {
-	const url = "http://localhost:8000/datatemplate";
-
+export async function createDataTemplate(dt: DataTemplateModel): Promise<HateoasResponseType> {
+	// Validate the input data
 	const result = DataTemplate.safeParse(dt);
 	if (!result.success) {
-		return result.error.message;
+		throw new Error(result.error.message);
 	}
 
-	const config: RequestInit = {
+	const config = {
+		...defaultConfig,
 		method: "POST",
 		body: JSON.stringify(result.data),
-		headers: {
-			Accept: "application-json",
-			"Content-Type": "application/json",
-		},
 	};
 
-	return fetch(url, config)
-		.then(async (response) => {
-			if (response.ok) {
-				return response.json();
-			}
+	const response = await fetch(urls.dataTemplate, config);
+	if (!response.ok) {
+		throw new Error("There has been an issue creating the new data template.");
+	}
 
-			throw Error(response.statusText);
-		})
-		.then(async (data: HateoasResponseType) => {
-			console.log({ data });
-			return data;
-		})
-		.catch((e) => {
-			console.error(e);
-			return e;
-		});
+	return response.json();
 }
 
 export async function getAllDataTemplates(): Promise<DataTemplateListModel> {
-	const url = "http://localhost:8000/datatemplate";
+	const response = await fetch(urls.dataTemplate, defaultConfig);
 
-	const config: RequestInit = {
-		method: "GET",
-		headers: {
-			Accept: "application-json",
-			"Content-Type": "application/json",
-		},
-	};
-
-	const response = await fetch(url, config);
 	if (!response.ok) {
-		return [];
+		throw new Error("There has been an issue fetching the data templates.");
 	}
 
-	const result = DataTemplateList.safeParse(await response.json());
-	if (!result.success) {
-		console.error("The result is bad");
-		console.warn({ result });
-		return [];
-	}
-
-	return result.data;
+	return await response.json();
 }
 
 export async function getDataTemplate(id: string): Promise<DataTemplateModel> {
-	const url = `http://localhost:8000/datatemplate/${id}`;
+	const url = `{urls.dataTemplate}/${id}`;
 
-	const config: RequestInit = {
-		method: "GET",
-		headers: {
-			Accept: "application-json",
-			"Content-Type": "application/json",
-		},
-	};
+	const response = await fetch(url, defaultConfig);
+	if (!response.ok) {
+		throw new Error("There has been an issue fetching the specific data template.");
+	}
 
-	return fetch(url, config)
-		.then((response) => {
-			if (response.ok) {
-				return response.json();
-			}
-
-			throw new Error(response.statusText);
-		})
-		.then((data: HateoasResponseType) => {
-			return data;
-		})
-		.catch((e) => {
-			return e;
-		});
+	return await response.json();
 }
