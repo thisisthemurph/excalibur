@@ -1,31 +1,22 @@
 import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "react-query";
 
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
 
-import { useMutation } from "react-query";
-import { createDataTemplate } from "../../api/dataTemplate";
+import { ColumnDataTypeEnum, DataTemplate, DataTemplateSchema } from "../../types";
+import { HateoasResponse } from "../../api/types";
 
-import {
-	ColumnDataTypeEnum,
-	DataTemplate,
-	DataTemplateColumn,
-	DataTemplateSchema,
-} from "../../types";
+type DataTemplateFormSubmitFn = (dt: DataTemplate) => Promise<HateoasResponse>;
 
 interface Props {
 	config: DataTemplate;
+	onSubmitFn: DataTemplateFormSubmitFn;
 }
 
-const defaultColumnObject: DataTemplateColumn = {
-	dataType: ColumnDataTypeEnum.Values.String,
-	originalName: "",
-	prettyName: "",
-};
-
-const TemplateConfigForm = ({ config }: Props) => {
-	const { mutateAsync, isLoading } = useMutation(createDataTemplate);
+const TemplateConfigForm = ({ config, onSubmitFn }: Props) => {
+	const { mutateAsync, isLoading } = useMutation(onSubmitFn);
 
 	const {
 		control,
@@ -49,7 +40,11 @@ const TemplateConfigForm = ({ config }: Props) => {
 
 	const onAppendColumn = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
-		append(defaultColumnObject);
+		append({
+			dataType: ColumnDataTypeEnum.Values.String,
+			originalName: "",
+			prettyName: "",
+		});
 	};
 
 	return (

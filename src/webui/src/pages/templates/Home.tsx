@@ -4,12 +4,13 @@ import { getAllDataTemplates } from "../../api/dataTemplate";
 import { useQuery } from "react-query";
 import DataTemplateGroup from "../../components/DataTemplateGroup";
 
-const TemplateHomePage = () => {
-	const { isLoading, isError, data } = useQuery("templates", getAllDataTemplates);
+const DataTemplateHomePage = () => {
+	const { isLoading, isError, data, error } = useQuery("templates", getAllDataTemplates);
 
 	return (
 		<>
 			<h1 className="px-wrap py-wrap">Templates</h1>
+			<pre>{JSON.stringify(error, null, 2)}</pre>
 			<main className="px-wrap">
 				<Link to="/template/create">Create a new template</Link>
 
@@ -21,4 +22,4 @@ const TemplateHomePage = () => {
 	);
 };
 
-export default TemplateHomePage;
+export default DataTemplateHomePage;

@@ -1,5 +1,15 @@
+import { createDataTemplate } from "../../api/dataTemplate";
 import TemplateConfigForm from "../../components/TemplateConfig/form";
 import { DataTemplate } from "../../types";
+
+const CreateDataTemplatePage = () => {
+	return (
+		<>
+			<h1 className="px-wrap">Create a new template</h1>
+			<TemplateConfigForm config={formDefaultConfiguration} onSubmitFn={createDataTemplate} />
+		</>
+	);
+};
 
 const formDefaultConfiguration: DataTemplate = {
 	name: "Company registered vehicles",
@@ -32,13 +42,4 @@ const formDefaultConfiguration: DataTemplate = {
 	],
 };
 
-const CreateTemplatePage = () => {
-	return (
-		<>
-			<h1 className="px-wrap">Create a new template</h1>
-			<TemplateConfigForm config={formDefaultConfiguration} />
-		</>
-	);
-};
-
-export default CreateTemplatePage;
+export default CreateDataTemplatePage;

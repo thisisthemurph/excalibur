@@ -1,5 +1,5 @@
-import DataTemplateGroupItem from "./DataTemplateListItem";
 import { DataTemplateList } from "../types";
+import DataTemplateGroupItem from "./DataTemplateListItem";
 
 type Props = {
 	isLoading: boolean;
