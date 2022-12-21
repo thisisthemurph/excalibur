@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "react-query";
@@ -7,16 +8,22 @@ import { PlusCircleIcon } from "@heroicons/react/24/solid";
 
 import { ColumnDataTypeEnum, DataTemplate, DataTemplateSchema } from "../../types";
 import { HateoasResponse } from "../../api/types";
+import { deleteDataTemplate } from "../../api/dataTemplate";
 
 type DataTemplateFormSubmitFn = (dt: DataTemplate) => Promise<HateoasResponse>;
 
 interface Props {
 	config: DataTemplate;
 	onSubmitFn: DataTemplateFormSubmitFn;
+	controls?: boolean;
 }
 
-const TemplateConfigForm = ({ config, onSubmitFn }: Props) => {
-	const { mutateAsync, isLoading } = useMutation(onSubmitFn);
+const TemplateConfigForm = ({ config, controls: controls, onSubmitFn }: Props) => {
+	const navigate = useNavigate();
+	const updateMutation = useMutation(onSubmitFn);
+	const deleteMutation = useMutation(deleteDataTemplate);
+
+	const hasControls = controls ? true : false;
 
 	const {
 		control,
@@ -35,7 +42,20 @@ const TemplateConfigForm = ({ config, onSubmitFn }: Props) => {
 	});
 
 	const onSubmit: SubmitHandler<DataTemplate> = async (data) => {
-		await mutateAsync({ ...data });
+		await updateMutation.mutateAsync({ ...data });
+	};
+
+	const onDelete = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		e.preventDefault();
+
+		if (!config._id) {
+			return;
+		}
+
+		if (confirm("Are you sure you would like to delete this data template")) {
+			await deleteMutation.mutateAsync(config._id);
+			navigate("/template");
+		}
 	};
 
 	const onAppendColumn = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -127,7 +147,16 @@ const TemplateConfigForm = ({ config, onSubmitFn }: Props) => {
 				</button>
 
 				<div className="space-x-4">
-					<input type="submit" className="btn btn__primary" value={isLoading ? "Saving" : "Save"} />
+					{hasControls && (
+						<button className="btn btn__danger" onClick={onDelete}>
+							{deleteMutation.status === "loading" ? "Deleting" : "Delete"}
+						</button>
+					)}
+					<input
+						type="submit"
+						className="btn btn__primary"
+						value={updateMutation.status === "loading" ? "Saving" : "Save"}
+					/>
 				</div>
 			</footer>
 		</form>

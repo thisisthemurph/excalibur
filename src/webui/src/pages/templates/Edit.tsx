@@ -12,7 +12,7 @@ const EditDataTemplatePage = () => {
 		return null;
 	}
 
-	const { data, status } = useQuery({
+	const { data: template, status } = useQuery({
 		queryKey: ["template", id],
 		queryFn: ({ queryKey }) => getDataTemplate(queryKey[1]),
 	});
@@ -21,7 +21,9 @@ const EditDataTemplatePage = () => {
 		<>
 			<h1 className="px-wrap py-wrap">Edit DataTemplate</h1>
 			{status === "loading" && <h2>Loading...</h2>}
-			{data && <TemplateConfigForm config={data} onSubmitFn={updateDataTemplate} />}
+			{template && (
+				<TemplateConfigForm config={template} onSubmitFn={updateDataTemplate} controls={true} />
+			)}
 		</>
 	);
 };

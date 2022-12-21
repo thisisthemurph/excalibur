@@ -10,7 +10,6 @@ const DataTemplateHomePage = () => {
 	return (
 		<>
 			<h1 className="px-wrap py-wrap">Templates</h1>
-			<pre>{JSON.stringify(error, null, 2)}</pre>
 			<main className="px-wrap">
 				<Link to="/template/create">Create a new template</Link>
 

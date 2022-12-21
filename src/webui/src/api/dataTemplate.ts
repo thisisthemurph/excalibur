@@ -68,3 +68,21 @@ export async function updateDataTemplate(dt: DataTemplate): Promise<HateoasRespo
 
 	return response.json();
 }
+
+export async function deleteDataTemplate(id: string): Promise<DataTemplate> {
+	if (!id) {
+		throw new Error("Could not determine DataTemplate to delete");
+	}
+
+	const config = {
+		...defaultConfig,
+		method: "DELETE",
+	};
+
+	const response = await fetch(`${urls.dataTemplate}/${id}`, config);
+	if (!response.ok) {
+		throw new Error("There has been an issue deleting the data template.");
+	}
+
+	return response.json();
+}
