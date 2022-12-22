@@ -10,4 +10,5 @@ const baseUrl = process.env.REACT_APP_API_SERVER as string;
 export const urls = {
 	base: baseUrl,
 	dataTemplate: `${baseUrl}/datatemplate`,
+	fileUpload: `${baseUrl}/file/upload`,
 };

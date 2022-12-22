@@ -1,5 +1,11 @@
 import { z } from "zod";
 
+export const ErrorResponseSchema = z.object({
+	message: z.string(),
+	status: z.number(),
+	statusText: z.string(),
+});
+
 export const HateoasResponseSchema = z.object({
 	id: z.string(),
 	links: z.array(
@@ -21,4 +27,8 @@ export const HateoasResponseSchema = z.object({
 	),
 });
 
+export const UploadStatusSchema = z.object({ status: z.string() });
+
+export type ErrorResponse = z.infer<typeof ErrorResponseSchema>;
 export type HateoasResponse = z.infer<typeof HateoasResponseSchema>;
+export type UploadStatus = z.infer<typeof UploadStatusSchema>;
