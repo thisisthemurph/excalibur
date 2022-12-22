@@ -32,6 +32,7 @@ func New(hc handler.Collection) RouterBuilder {
 func (b *routerBuilder) Init() *mux.Router {
 	b.buildDocsRouter()
 	b.buildDataTemplateRouter()
+	b.buildFileRouter()
 
 	return b.r
 }
@@ -48,6 +49,13 @@ func (b *routerBuilder) buildDataTemplateRouter() {
 	// Column configuration and updates
 
 	b.r.HandleFunc("/datatemplate/{id:[0-9a-f]{24}}/column", h.AddNewColumn).Methods(http.MethodPost)
+}
+
+func (b *routerBuilder) buildFileRouter() {
+	h := b.hc.FileHandler
+
+	b.r.HandleFunc("/file/upload", h.UploadFile).Methods(http.MethodPost)
+	b.r.HandleFunc("/file/status", h.GetFileStatus).Methods(http.MethodGet)
 }
 
 func (b *routerBuilder) buildDocsRouter() {
