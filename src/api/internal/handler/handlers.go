@@ -15,7 +15,7 @@ type Collection struct {
 // NewHandlerCollection instantiates a new handlers collection
 func NewHandlerCollection(sc services.ServiceCollection, l log.Logger) Collection {
 	dataTemplateHandler := NewDataTemplateHandler(sc.DataTemplate, l)
-	fileHandler := NewFileHandler(sc.File, l)
+	fileHandler := NewFileHandler(sc.File, sc.DataTemplate, l)
 
 	return Collection{
 		DataTemplateHandler: dataTemplateHandler,

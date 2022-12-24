@@ -15,6 +15,8 @@ type DataTemplateService interface {
 	UpdateDataTemplateByID(dataTemplateID string, name string) error
 	AddNewColumn(dataTemplateID string, column models.DataTemplateColumn) (*models.DataTemplate, error)
 	DeleteDataTemplateByID(id string) (*models.DataTemplate, error)
+	AddFileMetadata(dataTemplateID string, file models.FileMetadata) (*models.FileMetadata, error)
+	UpdateFileStatus(dataTemplateID string, fileID string, status models.FileUploadStatus) error
 }
 
 type dataTemplateService struct {
@@ -81,4 +83,17 @@ func (s *dataTemplateService) DeleteDataTemplateByID(id string) (*models.DataTem
 	}
 
 	return dt, err
+}
+
+func (s *dataTemplateService) AddFileMetadata(dataTemplateID string, file models.FileMetadata) (*models.FileMetadata, error) {
+	metadata, err := s.dataTemplateQuery.AddFileMetadata(dataTemplateID, file)
+	if err != nil {
+		return metadata, errorhandler.ErrorInternalServer
+	}
+
+	return metadata, nil
+}
+
+func (s *dataTemplateService) UpdateFileStatus(dataTemplateID string, fileID string, status models.FileUploadStatus) error {
+	return s.dataTemplateQuery.UpdateFileStatus(dataTemplateID, fileID, status)
 }

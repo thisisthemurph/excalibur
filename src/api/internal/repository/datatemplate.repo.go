@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"errors"
 	"excalibur/internal/models"
 	"fmt"
 	"log"
@@ -20,6 +21,8 @@ type DataTemplateQuery interface {
 	UpdateDataTemplate(dataTemplateID string, name string) (*string, error)
 	AddNewColumn(dataTemplateID string, column models.DataTemplateColumn) (*models.DataTemplate, error)
 	DeleteDataTemplateByID(dataTemplateID string) (*models.DataTemplate, error)
+	AddFileMetadata(dataTemplateID string, file models.FileMetadata) (*models.FileMetadata, error)
+	UpdateFileStatus(dataTemplateID string, fileID string, status models.FileUploadStatus) error
 }
 
 type dataTemplateQuery struct {
@@ -177,4 +180,58 @@ func (q *dataTemplateQuery) DeleteDataTemplateByID(dataTemplateID string) (*mode
 	}
 
 	return &result, nil
+}
+
+func (q *dataTemplateQuery) AddFileMetadata(dataTemplateID string, file models.FileMetadata) (*models.FileMetadata, error) {
+	var _, err = q.GetDataTemplateByID(dataTemplateID)
+	if err != nil {
+		return nil, err
+	}
+
+	oid, err := primitive.ObjectIDFromHex(dataTemplateID)
+	if err != nil {
+		return nil, errors.New("could not convert ID from string to ObjectId")
+	}
+
+	filter := bson.M{"_id": oid}
+	file.ID = primitive.NewObjectID()
+	update := bson.M{"$push": bson.M{"files": file}}
+
+	result, err := q.dataTemplateCollection.UpdateOne(context.TODO(), filter, update)
+	if result.MatchedCount == 0 {
+		return nil, errors.New("file metadata was not updated")
+	}
+
+	template, err := q.GetDataTemplateByID(dataTemplateID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &template.Files[len(template.Files)-1], nil
+}
+
+func (q *dataTemplateQuery) UpdateFileStatus(dataTemplateID string, fileID string, status models.FileUploadStatus) error {
+	dtid, err := primitive.ObjectIDFromHex(dataTemplateID)
+	if err != nil {
+		return errors.New("could not convert dataTemplateID from string to ObjectId")
+	}
+
+	fid, err := primitive.ObjectIDFromHex(fileID)
+	if err != nil {
+		return errors.New("could not convert fileID from string to ObjectId")
+	}
+
+	filter := bson.M{"_id": dtid, "files._id": fid}
+	update := bson.M{"$set": bson.M{"files.$.status": status.String()}}
+	r, err := q.dataTemplateCollection.UpdateOne(context.TODO(), filter, update)
+
+	if err != nil {
+		return err
+	}
+
+	if r.ModifiedCount < 1 {
+		return errors.New("the status of the file was not updated")
+	}
+
+	return nil
 }

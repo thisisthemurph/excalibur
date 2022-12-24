@@ -12,7 +12,9 @@ type DataTemplateColumn struct {
 
 // DataTemplate defines the structure of a data table
 type DataTemplate struct {
+	// TODO: Update _id to id for json
 	ID      primitive.ObjectID   `bson:"_id,omitempty" json:"_id,omitempty"`
 	Name    string               `bson:"name" json:"name"`
 	Columns []DataTemplateColumn `bson:"columns" json:"columns"`
+	Files   []FileMetadata       `bson:"files,omitempty"`
 }
