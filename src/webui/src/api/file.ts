@@ -1,7 +1,10 @@
 import { urls } from ".";
 import { UploadStatus, ErrorResponse, ErrorResponseSchema } from "./types";
 
-export async function uploadFile(file: File): Promise<UploadStatus | ErrorResponse> {
+export async function uploadFile(
+	dataTemplateId: string,
+	file: File,
+): Promise<UploadStatus | ErrorResponse> {
 	const formData = new FormData();
 	formData.append("fileUpload", file);
 	formData.append("fileName", file.name);
@@ -11,7 +14,7 @@ export async function uploadFile(file: File): Promise<UploadStatus | ErrorRespon
 		body: formData,
 	};
 
-	const response = await fetch(urls.fileUpload, config);
+	const response = await fetch(urls.fileUpload(dataTemplateId), config);
 
 	if (!response.ok) {
 		const err = await response.json();
