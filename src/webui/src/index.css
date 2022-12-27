@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+  body.modal--open {
+    overflow-y: hidden;
+  }
+
   h1 {
     @apply text-3xl text-indigo-500;
   }
