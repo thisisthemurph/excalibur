@@ -2,3 +2,11 @@
 
 # Directory containing uploaded files during testing
 **/wwwroot/uploads/
+
+# Directories created by Visual Studio
+*.suo
+*.user
+_ReSharper.*
+bin
+obj
+packages

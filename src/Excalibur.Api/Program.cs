@@ -8,6 +8,8 @@ builder.Services.Configure<MongoDBSettings>(builder.Configuration.GetSection("Mo
 
 // Add services to the container.
 builder.Services.AddSingleton<DatabaseContext>();
+
+builder.Services.AddScoped<FileUploadService>();
 builder.Services.AddScoped<DataTemplateService>();
 
 builder.Services.AddControllers();
