@@ -1,49 +1,48 @@
 ﻿namespace Excalibur.Api.Controllers;
 
-using Excalibur.Api.DTOs;
+using AutoMapper;
 using Excalibur.Api.DTOs.Requests;
 using Excalibur.Api.DTOs.Responses;
+using Excalibur.Api.Models;
 using Excalibur.Api.Services;
 using Microsoft.AspNetCore.Mvc;
+using SharpCompress.Common;
 
 [ApiController]
 [Route("[controller]")]
 public class DataTemplateController : ControllerBase
 {
+    private readonly IMapper _mapper;
     private readonly ILogger<DataTemplateController> _logger;
-    private readonly DataTemplateService _mongoDBService;
+    private readonly DataTemplateService _dataTemplateService;
 
     public DataTemplateController(
+        IMapper mapper,
         ILogger<DataTemplateController> logger,
-        DataTemplateService mongoDbService)
+        DataTemplateService dataTemplateService)
     {
+        _mapper = mapper;
         _logger = logger;
-        _mongoDBService = mongoDbService;
+        _dataTemplateService = dataTemplateService;
     }
 
     [HttpGet]
     public async Task<IEnumerable<DataTemplateResponse>> Get()
     {
-        var templates = await _mongoDBService.GetAsync();
-        return templates.Select(t => new DataTemplateResponse
-        {
-            Id = t.Id,
-            Name= t.Name,
-            Columns = t.Columns is null ? new List<DataTemplateColumnDto>() : t.Columns.Select(c => new DataTemplateColumnDto { Id = c.Id.ToString(), DataType = c.DataType, OriginalName = c.OriginalName, PrettyName = c.PrettyName }).ToList(),
-            Files = t.Files,
-        }).ToList();
+        var templates = await _dataTemplateService.GetAsync();
+        return templates.Select(t => _mapper.Map<DataTemplateResponse>(t)).ToList();
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<DataTemplateResponse>> GetDataTemplateById(string id, CancellationToken cancellationToken)
     {
-        var template = await _mongoDBService.GetByIdAsync(id, cancellationToken);
+        var template = await _dataTemplateService.GetByIdAsync(id, cancellationToken);
         if (template is null)
         {
             return NotFound($"DataTemplate with ID `{id}` does not exist");
         }
 
-        return Ok(template.MapToResponse());
+        return Ok(_mapper.Map<DataTemplateResponse>(template));
     }
 
     [HttpPost]
@@ -54,7 +53,7 @@ public class DataTemplateController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var created = await _mongoDBService.CreateAsync(dataTemplate);
+        var created = await _dataTemplateService.CreateAsync(_mapper.Map<DataTemplate>(dataTemplate));
         return Created(nameof(Get), new { id = created.Id });
     }
 
@@ -66,7 +65,7 @@ public class DataTemplateController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var success = await _mongoDBService.AddColumnAsync(id, column, cancellationToken);
+        var success = await _dataTemplateService.AddColumnAsync(id, column, cancellationToken);
         if (!success)
         {
             return NotFound($"DataTemplate with ID `{id}` does not exist");
@@ -83,20 +82,20 @@ public class DataTemplateController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var updated = await _mongoDBService.UpdateAsync(id, dataTemplate.Name, cancellationToken);
+        var updatedDataTemplate = await _dataTemplateService.UpdateAsync(id, dataTemplate.Name, cancellationToken);
 
-        if (updated is null)
+        if (updatedDataTemplate is null)
         {
             return NotFound($"DataTemplate with ID {id} does not exist");
         }
 
-        return Ok(updated.MapToResponse());
+        return NoContent();
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id, CancellationToken cancellationToken)
     {
-        var success = await _mongoDBService.DeleteAsync(id, cancellationToken);
+        var success = await _dataTemplateService.DeleteAsync(id, cancellationToken);
         if (!success)
         {
             return NotFound($"DataTemplate with ID `{id}` does not exist");

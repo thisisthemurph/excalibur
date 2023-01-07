@@ -1,12 +1,11 @@
-﻿using Excalibur.Api.DTOs;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Excalibur.Api.DTOs.Requests;
 
 public class DataTemplateCreateRequest
 {
-    [StringLength(1)]
+    [MinLength(6, ErrorMessage = "The name of the data template must be at least '6' characters in length.")]
     public string Name { get; set; }
 
-    public List<DataTemplateColumnDto> Columns { get; set; }
+    public List<DataTemplateColumnRequest> Columns { get; set; }
 }

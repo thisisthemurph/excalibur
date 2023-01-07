@@ -6,14 +6,13 @@ namespace Excalibur.Api.DTOs.Requests;
 public class DataTemplateCreateColumnRequest
 {
     [Required]
-    [StringLength(1)]
+    [MinLength(1, ErrorMessage = "The original name field must be at least 1 character in length.")]
     public string OriginalName { get; set; }
 
     [Required]
-    [StringLength(1)]
+    [MinLength(1, ErrorMessage = "The pretty name field must be at least 1 character in length.")]
     public string PrettyName { get; set; }
 
     [Required]
-    [StringLength(1)]
     public string DataType { get; set; }
 }

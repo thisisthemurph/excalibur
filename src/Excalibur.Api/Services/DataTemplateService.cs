@@ -5,6 +5,7 @@ using MongoDB.Bson;
 using Excalibur.Api.Models;
 using MongoDB.Driver.Linq;
 using Excalibur.Api.DTOs.Requests;
+using AutoMapper;
 
 public class DataTemplateService
 {
@@ -29,22 +30,10 @@ public class DataTemplateService
 			.SingleOrDefaultAsync(cancellationToken);
 	}
 
-	public async Task<DataTemplate> CreateAsync(DataTemplateCreateRequest dataTemplate)
+	public async Task<DataTemplate> CreateAsync(DataTemplate dataTemplate)
 	{
-		var entity = new DataTemplate
-		{
-			Name = dataTemplate.Name,
-			Columns = dataTemplate.Columns.Select(
-				c => new DataTemplateColumn
-				{
-					OriginalName = c.OriginalName,
-					PrettyName = c.PrettyName,
-					DataType = c.DataType,
-				}).ToList(),
-		};
-
-		await _dataTemplateCollection.InsertOneAsync(entity);
-		return entity;
+		await _dataTemplateCollection.InsertOneAsync(dataTemplate);
+		return dataTemplate;
 	}
 
 	public async Task<bool> AddColumnAsync(string id, DataTemplateCreateColumnRequest column, CancellationToken cancellationToken = default)

@@ -1,6 +1,4 @@
-﻿using Excalibur.Api.Models;
-
-namespace Excalibur.Api.DTOs.Responses;
+﻿namespace Excalibur.Api.DTOs.Responses;
 
 public class DataTemplateResponse
 {
@@ -8,8 +6,8 @@ public class DataTemplateResponse
 
     public string Name { get; set; }
 
-    public List<DataTemplateColumnDto> Columns { get; set; }
+    public List<DataTemplateColumnResponse> Columns { get; set; }
 
-    public List<DataTemplateUploadedFileMetadata> Files { get; set; }
+    public List<DataTemplateUploadedFileMetadataResponse> Files { get; set; }
 }
 
