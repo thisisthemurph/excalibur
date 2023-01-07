@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 
-namespace Excalibur.Api.Models;
+namespace Excalibur.Domain.Entities;
 
 public class DataTemplateColumn
 {

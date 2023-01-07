@@ -1,10 +1,10 @@
 ﻿namespace Excalibur.Api.Controllers;
 
 using AutoMapper;
-using Excalibur.Api.DTOs.Requests;
-using Excalibur.Api.DTOs.Responses;
-using Excalibur.Api.Models;
-using Excalibur.Api.Services;
+using Excalibur.Application.DTOs.Requests;
+using Excalibur.Application.DTOs.Responses;
+using Excalibur.Application.Repositories;
+using Excalibur.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using SharpCompress.Common;
 
@@ -14,12 +14,12 @@ public class DataTemplateController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly ILogger<DataTemplateController> _logger;
-    private readonly DataTemplateService _dataTemplateService;
+    private readonly IDataTemplateRepo _dataTemplateService;
 
     public DataTemplateController(
         IMapper mapper,
         ILogger<DataTemplateController> logger,
-        DataTemplateService dataTemplateService)
+        IDataTemplateRepo dataTemplateService)
     {
         _mapper = mapper;
         _logger = logger;
@@ -95,7 +95,7 @@ public class DataTemplateController : ControllerBase
 
         try
         {
-            var updatedDataTemplate = await _dataTemplateService.UpdateAsync(id, dataTemplate.Name, cancellationToken)
+            var updatedDataTemplate = await _dataTemplateService.UpdateAsync(id, dataTemplate.Name, cancellationToken);
             if (updatedDataTemplate is null)
             {
                 return NotFound($"DataTemplate with ID {id} does not exist");

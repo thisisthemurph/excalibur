@@ -1,14 +1,17 @@
-﻿using Excalibur.Api.Exceptions;
+﻿using Excalibur.Domain.Exceptions;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
-namespace Excalibur.Api.Services;
+namespace Excalibur.Application.Services;
 
-public class FileUploadService
+public class FileUploadService : IFileUploadService
 {
     private readonly ILogger<FileUploadService> _logger;
     private readonly IWebHostEnvironment _hostEnvironment;
 
     public FileUploadService(
-        IWebHostEnvironment hostEnvironment, 
+        IWebHostEnvironment hostEnvironment,
         ILogger<FileUploadService> logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -31,10 +34,10 @@ public class FileUploadService
 
         string filePath = Path.Combine(uploadsPath, newFileName);
         var directory = Path.GetDirectoryName(filePath);
-        if (directory is null) 
+        if (directory is null)
         {
             _logger.LogError("Directory not discernible from file path: {FilePath}.", filePath);
-            throw new DirectoryNotFoundException("Could not deternmine the directory storage location.");    
+            throw new DirectoryNotFoundException("Could not deternmine the directory storage location.");
         }
 
         Directory.CreateDirectory(directory);

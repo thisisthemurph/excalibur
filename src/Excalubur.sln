@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excalibur.Api", "Excalibur.Api\Excalibur.Api.csproj", "{4E88F656-BCF6-4682-BBA7-62310A186494}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Excalibur.Api", "Excalibur.Api\Excalibur.Api.csproj", "{4E88F656-BCF6-4682-BBA7-62310A186494}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excalibur.Domain", "Excalibur.Domain\Excalibur.Domain.csproj", "{14EB895F-2ACD-4608-9139-D05A5FCDD869}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excalibur.Infrastructure", "Excalibur.Infrastructure\Excalibur.Infrastructure.csproj", "{D391372D-5F26-4B87-9263-7F5F5511F937}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excalibur.Application", "Excalibur.Application\Excalibur.Application.csproj", "{217A8EAD-885C-419A-BCB2-93EA26E48C01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{4E88F656-BCF6-4682-BBA7-62310A186494}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E88F656-BCF6-4682-BBA7-62310A186494}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E88F656-BCF6-4682-BBA7-62310A186494}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14EB895F-2ACD-4608-9139-D05A5FCDD869}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14EB895F-2ACD-4608-9139-D05A5FCDD869}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14EB895F-2ACD-4608-9139-D05A5FCDD869}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14EB895F-2ACD-4608-9139-D05A5FCDD869}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D391372D-5F26-4B87-9263-7F5F5511F937}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D391372D-5F26-4B87-9263-7F5F5511F937}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D391372D-5F26-4B87-9263-7F5F5511F937}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D391372D-5F26-4B87-9263-7F5F5511F937}.Release|Any CPU.Build.0 = Release|Any CPU
+		{217A8EAD-885C-419A-BCB2-93EA26E48C01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{217A8EAD-885C-419A-BCB2-93EA26E48C01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{217A8EAD-885C-419A-BCB2-93EA26E48C01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{217A8EAD-885C-419A-BCB2-93EA26E48C01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

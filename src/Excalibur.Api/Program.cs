@@ -1,16 +1,8 @@
-using Excalibur.Api;
-using Excalibur.Api.Models;
-using Excalibur.Api.Services;
+using Excalibur.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<MongoDBSettings>(builder.Configuration.GetSection("MongoDB"));
-
-// Add services to the container.
-builder.Services.AddSingleton<DatabaseContext>();
-
-builder.Services.AddScoped<FileUploadService>();
-builder.Services.AddScoped<DataTemplateService>();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddControllers();
 

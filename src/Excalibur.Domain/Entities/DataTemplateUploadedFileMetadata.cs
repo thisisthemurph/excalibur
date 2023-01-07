@@ -1,7 +1,7 @@
-﻿namespace Excalibur.Api.Models;
-
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+
+namespace Excalibur.Domain.Entities;
 
 public class DataTemplateUploadedFileMetadata
 {

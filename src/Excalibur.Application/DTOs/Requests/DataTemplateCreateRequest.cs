@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Excalibur.Api.DTOs.Requests;
+namespace Excalibur.Application.DTOs.Requests;
 
 public class DataTemplateCreateRequest
 {

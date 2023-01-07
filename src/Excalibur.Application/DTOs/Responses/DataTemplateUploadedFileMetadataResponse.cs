@@ -1,4 +1,4 @@
-﻿namespace Excalibur.Api.DTOs.Responses;
+﻿namespace Excalibur.Application.DTOs.Responses;
 
 public class DataTemplateUploadedFileMetadataResponse
 {

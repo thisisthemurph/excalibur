@@ -1,4 +1,4 @@
-﻿namespace Excalibur.Api.Exceptions;
+﻿namespace Excalibur.Domain.Exceptions;
 
 public class EmptyFileException : Exception
 {

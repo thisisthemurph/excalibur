@@ -1,24 +1,27 @@
-﻿namespace Excalibur.Api.Controllers;
-
-using Excalibur.Api.DTOs.Responses;
-using Excalibur.Api.Exceptions;
-using Excalibur.Api.ExtensionMethods;
-using Excalibur.Api.Models;
-using Excalibur.Api.Services;
+﻿using Excalibur.Application.DTOs.Requests;
+using Excalibur.Application.DTOs.Responses;
+using Excalibur.Application.Repositories;
+using Excalibur.Application.Services;
+using Excalibur.Domain.Entities;
+using Excalibur.Domain.Exceptions;
+using Excalibur.Domain.ExtensionMethods;
+using Excalibur.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
+
+namespace Excalibur.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
 public class FileController : ControllerBase
 {
     private readonly ILogger<DataTemplateController> _logger;
-    private readonly DataTemplateService _dataTemplateRepo;
-    private readonly FileUploadService _fileUploadService;
+    private readonly IDataTemplateRepo _dataTemplateRepo;
+    private readonly IFileUploadService _fileUploadService;
 
     public FileController(
         ILogger<DataTemplateController> logger,
-        DataTemplateService dataTemplateRepo,
-        FileUploadService fileUploadService)
+        IDataTemplateRepo dataTemplateRepo,
+        IFileUploadService fileUploadService)
     {
         _logger = logger;
         _dataTemplateRepo = dataTemplateRepo;
@@ -48,7 +51,7 @@ public class FileController : ControllerBase
 
         var updatedDataTemplate = await _dataTemplateRepo.AddFileMetadata(
             dataTemplateId,
-            new DataTemplateUploadedFileMetadata
+            new DataTemplateAddFileMetadataRequest
             {
                 Name = formFile.FileName,
                 StoredName = newFileName,

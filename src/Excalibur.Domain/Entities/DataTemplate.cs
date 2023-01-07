@@ -1,6 +1,5 @@
-﻿namespace Excalibur.Api.Models;
+﻿namespace Excalibur.Domain.Entities;
 
-using Excalibur.Api.DTOs.Responses;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -19,4 +18,3 @@ public class DataTemplate
     [BsonElement("files")]
     public List<DataTemplateUploadedFileMetadata> Files { get; set; }
 }
-

@@ -1,6 +1,6 @@
-﻿using System.Globalization;
+﻿namespace Excalibur.Domain.ExtensionMethods;
 
-namespace Excalibur.Api.ExtensionMethods;
+using System.Globalization;
 
 public static class DateTimeExtensionMethods
 {

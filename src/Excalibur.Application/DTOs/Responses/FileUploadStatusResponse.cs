@@ -1,6 +1,6 @@
-﻿using Excalibur.Api.Models;
+﻿using Excalibur.Domain.Models;
 
-namespace Excalibur.Api.DTOs.Responses;
+namespace Excalibur.Application.DTOs.Responses;
 
 public class FileUploadStatusResponse
 {

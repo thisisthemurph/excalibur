@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Excalibur.Api.DTOs.Requests;
-using Excalibur.Api.DTOs.Responses;
-using Excalibur.Api.Models;
+using Excalibur.Application.DTOs.Requests;
+using Excalibur.Application.DTOs.Responses;
+using Excalibur.Domain.Entities;
 
 namespace Excalibur.Api;
 

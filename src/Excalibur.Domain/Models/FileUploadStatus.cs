@@ -1,4 +1,4 @@
-﻿namespace Excalibur.Api.Models;
+﻿namespace Excalibur.Domain.Models;
 
 public static class FileUploadStatus
 {

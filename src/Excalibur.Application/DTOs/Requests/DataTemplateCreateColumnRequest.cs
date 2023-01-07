@@ -1,7 +1,6 @@
-﻿using Excalibur.Api.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Excalibur.Api.DTOs.Requests;
+namespace Excalibur.Application.DTOs.Requests;
 
 public class DataTemplateCreateColumnRequest
 {
