@@ -5,6 +5,7 @@ using MongoDB.Driver;
 using MongoDB.Bson;
 using Excalibur.Api.Models;
 using MongoDB.Driver.Linq;
+using Excalibur.Api.DTOs.Requests;
 
 public class DataTemplateService
 {
@@ -29,16 +30,35 @@ public class DataTemplateService
 			.SingleOrDefaultAsync(cancellationToken);
 	}
 
-	public async Task<DataTemplate> CreateAsync(DataTemplate dataTemplate)
+	public async Task<DataTemplate> CreateAsync(DataTemplateCreateRequest dataTemplate)
 	{
-		await _dataTemplateCollection.InsertOneAsync(dataTemplate);
-		return dataTemplate;
+		var entity = new DataTemplate
+		{
+			Name = dataTemplate.Name,
+			Columns = dataTemplate.Columns.Select(
+				c => new DataTemplateColumn
+				{
+					OriginalName = c.OriginalName,
+					PrettyName = c.PrettyName,
+					DataType = c.DataType,
+				}).ToList(),
+		};
+
+		await _dataTemplateCollection.InsertOneAsync(entity);
+		return entity;
 	}
 
-	public async Task<bool> AddColumnAsync(string id, DataTemplateColumn column, CancellationToken cancellationToken = default)
+	public async Task<bool> AddColumnAsync(string id, DataTemplateCreateColumnRequest column, CancellationToken cancellationToken = default)
 	{
+		var entity = new DataTemplateColumn
+		{
+			OriginalName = column.OriginalName,
+			PrettyName = column.PrettyName,
+			DataType = column.DataType,
+		};
+
 		var filter = Builders<DataTemplate>.Filter.Eq("Id", id);
-		var update = Builders<DataTemplate>.Update.AddToSet<DataTemplateColumn>("Columns", column);
+		var update = Builders<DataTemplate>.Update.AddToSet<DataTemplateColumn>("Columns", entity);
 		
 		var result = await _dataTemplateCollection
 			.UpdateOneAsync(filter, update, new UpdateOptions() { IsUpsert = true }, cancellationToken);

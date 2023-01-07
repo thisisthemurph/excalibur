@@ -1,9 +1,9 @@
 ﻿using Excalibur.Api.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace Excalibur.Api.DTOs;
+namespace Excalibur.Api.DTOs.Requests;
 
-public class DataTemplateColumnCreateDto
+public class DataTemplateCreateColumnRequest
 {
     [Required]
     [StringLength(1)]
@@ -16,14 +16,4 @@ public class DataTemplateColumnCreateDto
     [Required]
     [StringLength(1)]
     public string DataType { get; set; }
-
-    public DataTemplateColumn MapToModel()
-    {
-        return new DataTemplateColumn
-        {
-            OriginalName = OriginalName,
-            PrettyName = PrettyName,
-            DataType = DataType,
-        };
-    }
 }

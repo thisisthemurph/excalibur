@@ -1,6 +1,6 @@
 ﻿namespace Excalibur.Api.Controllers;
 
-using Excalibur.Api.DTOs;
+using Excalibur.Api.DTOs.Responses;
 using Excalibur.Api.Exceptions;
 using Excalibur.Api.ExtensionMethods;
 using Excalibur.Api.Models;
@@ -81,7 +81,7 @@ public class FileController : ControllerBase
         
         // Return the status of the upload
 
-        return Ok(new FileUploadStatusDto
+        return Ok(new FileUploadStatusResponse
         {
             DataTemplateId = dataTemplateId,
             FileId = newFile.Id,

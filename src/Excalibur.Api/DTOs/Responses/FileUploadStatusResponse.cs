@@ -1,8 +1,8 @@
 ﻿using Excalibur.Api.Models;
 
-namespace Excalibur.Api.DTOs;
+namespace Excalibur.Api.DTOs.Responses;
 
-public class FileUploadStatusDto
+public class FileUploadStatusResponse
 {
     public string DataTemplateId { get; set; }
 

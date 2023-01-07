@@ -1,7 +1,8 @@
 ﻿namespace Excalibur.Api.Controllers;
 
 using Excalibur.Api.DTOs;
-using Excalibur.Api.Models;
+using Excalibur.Api.DTOs.Requests;
+using Excalibur.Api.DTOs.Responses;
 using Excalibur.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,14 +22,20 @@ public class DataTemplateController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<DataTemplateDto>> Get()
+    public async Task<IEnumerable<DataTemplateResponse>> Get()
     {
         var templates = await _mongoDBService.GetAsync();
-        return templates.Select(t => t.MapToDto()).ToList();
+        return templates.Select(t => new DataTemplateResponse
+        {
+            Id = t.Id,
+            Name= t.Name,
+            Columns = t.Columns is null ? new List<DataTemplateColumnDto>() : t.Columns.Select(c => new DataTemplateColumnDto { Id = c.Id.ToString(), DataType = c.DataType, OriginalName = c.OriginalName, PrettyName = c.PrettyName }).ToList(),
+            Files = t.Files,
+        }).ToList();
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetDataTemplateById(string id, CancellationToken cancellationToken)
+    public async Task<ActionResult<DataTemplateResponse>> GetDataTemplateById(string id, CancellationToken cancellationToken)
     {
         var template = await _mongoDBService.GetByIdAsync(id, cancellationToken);
         if (template is null)
@@ -36,30 +43,30 @@ public class DataTemplateController : ControllerBase
             return NotFound($"DataTemplate with ID `{id}` does not exist");
         }
 
-        return Ok(template.MapToDto());
+        return Ok(template.MapToResponse());
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] DataTemplateDto dataTemplate)
+    public async Task<IActionResult> Create([FromBody] DataTemplateCreateRequest dataTemplate)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
-        var created = await _mongoDBService.CreateAsync(dataTemplate.MapToModel());
+        var created = await _mongoDBService.CreateAsync(dataTemplate);
         return Created(nameof(Get), new { id = created.Id });
     }
 
     [HttpPost("{id}")]
-    public async Task<IActionResult> AddColumn(string id, [FromBody] DataTemplateColumnCreateDto column, CancellationToken cancellationToken)
+    public async Task<IActionResult> AddColumn(string id, [FromBody] DataTemplateCreateColumnRequest column, CancellationToken cancellationToken)
     {
         if(!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
-        var success = await _mongoDBService.AddColumnAsync(id, column.MapToModel(), cancellationToken);
+        var success = await _mongoDBService.AddColumnAsync(id, column, cancellationToken);
         if (!success)
         {
             return NotFound($"DataTemplate with ID `{id}` does not exist");
@@ -69,7 +76,7 @@ public class DataTemplateController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<DataTemplateDto>> Update(string id, [FromBody] DataTemplateUpdateDto dataTemplate, CancellationToken cancellationToken)
+    public async Task<ActionResult<DataTemplateResponse>> Update(string id, [FromBody] DataTemplateUpdateRequest dataTemplate, CancellationToken cancellationToken)
     {
         if (!ModelState.IsValid)
         {
@@ -83,7 +90,7 @@ public class DataTemplateController : ControllerBase
             return NotFound($"DataTemplate with ID {id} does not exist");
         }
 
-        return Ok(updated.MapToDto());
+        return Ok(updated.MapToResponse());
     }
 
     [HttpDelete("{id}")]

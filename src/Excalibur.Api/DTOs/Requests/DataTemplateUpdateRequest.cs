@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Excalibur.Api.DTOs;
+namespace Excalibur.Api.DTOs.Requests;
 
-public class DataTemplateUpdateDto
+public class DataTemplateUpdateRequest
 {
     [MinLength(1)]
     public string Name { get; set; }
