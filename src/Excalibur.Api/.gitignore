@@ -1,0 +1,4 @@
+# Project specific
+
+# Directory containing uploaded files during testing
+**/wwwroot/uploads/
