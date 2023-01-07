@@ -128,7 +128,3 @@ public class DataTemplateRepo : IDataTemplateRepo
         return numberOfResults > 0;
     }
 }
-
-public interface IDataTemplateService
-{
-}
