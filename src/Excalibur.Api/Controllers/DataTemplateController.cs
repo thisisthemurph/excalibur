@@ -134,7 +134,6 @@ public class DataTemplateController : ControllerBase
         {
             _logger.LogWarning("DataTemplate with Id {DataTemplateId} does not exist.", dataTemplateId);
             return NotFound("The requested data template does not exist");
-            
         }
 
         var file = dataTemplate.Files.FirstOrDefault(f => f.Id == fileId);
