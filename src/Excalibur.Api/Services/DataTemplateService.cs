@@ -5,7 +5,6 @@ using MongoDB.Bson;
 using Excalibur.Api.Models;
 using MongoDB.Driver.Linq;
 using Excalibur.Api.DTOs.Requests;
-using AutoMapper;
 
 public class DataTemplateService
 {
@@ -32,6 +31,12 @@ public class DataTemplateService
 
 	public async Task<DataTemplate> CreateAsync(DataTemplate dataTemplate)
 	{
+		var exists = await ExistsWithNameAsync(dataTemplate.Name);
+		if (exists)
+		{
+			throw new ArgumentException($"A data template with the name '{dataTemplate.Name}' already exists.");
+		}
+
 		await _dataTemplateCollection.InsertOneAsync(dataTemplate);
 		return dataTemplate;
 	}
@@ -54,11 +59,17 @@ public class DataTemplateService
 		return result.ModifiedCount == 1;
 	}
 
-	public async Task<DataTemplate> UpdateAsync(string id, string dateTemplateName, CancellationToken cancellationToken = default)
+	public async Task<DataTemplate> UpdateAsync(string id, string dataTemplateName, CancellationToken cancellationToken = default)
 	{
-		var filter = Builders<DataTemplate>.Filter.Eq("Id", id);
+        var exists = await ExistsWithNameAsync(dataTemplateName);
+        if (exists)
+        {
+            throw new ArgumentException($"A data template with the name '{dataTemplateName}' already exists.");
+        }
+
+        var filter = Builders<DataTemplate>.Filter.Eq("Id", id);
 		var update = Builders<DataTemplate>.Update
-			.Set(t => t.Name, dateTemplateName);
+			.Set(t => t.Name, dataTemplateName);
 
         var options = new FindOneAndUpdateOptions<DataTemplate>
         {
@@ -95,5 +106,15 @@ public class DataTemplateService
 
 		var updateResult = await _dataTemplateCollection.FindOneAndUpdateAsync(filter, update, options, cancellationToken: cancellationToken);
 		return updateResult;
+	}
+
+	private async Task<bool> ExistsWithNameAsync(string dataTemplateName)
+	{
+		var numberOfResults = await _dataTemplateCollection
+			.AsQueryable()
+			.Where(x => x.Name == dataTemplateName)
+			.CountAsync();
+
+		return numberOfResults > 0;
 	}
 }

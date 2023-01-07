@@ -53,8 +53,19 @@ public class DataTemplateController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var created = await _dataTemplateService.CreateAsync(_mapper.Map<DataTemplate>(dataTemplate));
-        return Created(nameof(Get), new { id = created.Id });
+        try
+        {
+            var created = await _dataTemplateService.CreateAsync(_mapper.Map<DataTemplate>(dataTemplate));
+            return Created(nameof(Get), new { id = created.Id });
+        }
+        catch (ArgumentException e)
+        {
+            return BadRequest(e.Message);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, e);
+        }
     }
 
     [HttpPost("{id}")]
@@ -82,12 +93,24 @@ public class DataTemplateController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var updatedDataTemplate = await _dataTemplateService.UpdateAsync(id, dataTemplate.Name, cancellationToken);
-
-        if (updatedDataTemplate is null)
+        try
         {
-            return NotFound($"DataTemplate with ID {id} does not exist");
+            var updatedDataTemplate = await _dataTemplateService.UpdateAsync(id, dataTemplate.Name, cancellationToken)
+            if (updatedDataTemplate is null)
+            {
+                return NotFound($"DataTemplate with ID {id} does not exist");
+            }
         }
+        catch (ArgumentException e)
+        {
+            return BadRequest(e.Message);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, e);
+        }
+
+        
 
         return NoContent();
     }
