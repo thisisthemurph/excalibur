@@ -16,6 +16,9 @@ public class DataTemplate
     [BsonElement("columns")]
     public List<DataTemplateColumn>? Columns { get; set; }
 
+    [BsonElement("files")]
+    public List<DataTemplateUploadedFileMetadata> Files { get; set; }
+
     public DataTemplateDto MapToDto()
     {
         return new DataTemplateDto
