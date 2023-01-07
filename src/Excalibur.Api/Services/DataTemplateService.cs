@@ -1,6 +1,5 @@
 ﻿namespace Excalibur.Api.Services;
 
-using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using Excalibur.Api.Models;
