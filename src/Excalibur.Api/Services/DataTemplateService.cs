@@ -51,10 +51,16 @@ public class DataTemplateService
 		var filter = Builders<DataTemplate>.Filter.Eq("Id", id);
 		var update = Builders<DataTemplate>.Update
 			.Set(t => t.Name, dateTemplateName);
-		
-		return await _dataTemplateCollection.FindOneAndUpdateAsync(
+
+        var options = new FindOneAndUpdateOptions<DataTemplate>
+        {
+            ReturnDocument = ReturnDocument.After,
+        };
+
+        return await _dataTemplateCollection.FindOneAndUpdateAsync(
 			filter, 
-			update, 
+			update,
+			options,
 			cancellationToken: cancellationToken);
 	}
 
@@ -64,5 +70,22 @@ public class DataTemplateService
 		var result = await _dataTemplateCollection.DeleteOneAsync(filter, cancellationToken);
 
 		return result.DeletedCount == 1;
+	}
+
+	public async Task<DataTemplate> AddFileMetadata(string id, DataTemplateUploadedFileMetadata metadata, CancellationToken cancellationToken = default)
+	{
+		metadata.Id = ObjectId.GenerateNewId().ToString();
+
+		var filter = Builders<DataTemplate>.Filter.Eq("Id", id);
+		var update = Builders<DataTemplate>.Update
+			.Push<DataTemplateUploadedFileMetadata>(t => t.Files, metadata);
+
+		var options = new FindOneAndUpdateOptions<DataTemplate>
+		{
+			ReturnDocument = ReturnDocument.After,
+		};
+
+		var updateResult = await _dataTemplateCollection.FindOneAndUpdateAsync(filter, update, options, cancellationToken: cancellationToken);
+		return updateResult;
 	}
 }
