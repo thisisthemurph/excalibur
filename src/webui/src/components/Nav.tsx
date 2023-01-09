@@ -9,9 +9,6 @@ const Nav = () => {
 			<Link to="/template" className="text-lg no-underline">
 				Templates
 			</Link>
-			<Link to="/upload" className="text-lg no-underline">
-				Upload CSV
-			</Link>
 		</nav>
 	);
 };
