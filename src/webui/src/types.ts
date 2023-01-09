@@ -9,7 +9,7 @@ export const DataTemplateColumnSchema = z.object({
 });
 
 export const DataTemplateSchema = z.object({
-	_id: z.string().optional(),
+	id: z.string().optional(),
 	name: z.string(),
 	columns: z.array(DataTemplateColumnSchema),
 });

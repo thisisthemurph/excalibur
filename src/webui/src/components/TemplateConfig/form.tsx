@@ -48,12 +48,12 @@ const TemplateConfigForm = ({ config, controls: controls, onSubmitFn }: Props) =
 	const onDelete = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
 
-		if (!config._id) {
+		if (!config.id) {
 			return;
 		}
 
 		if (confirm("Are you sure you would like to delete this data template")) {
-			await deleteMutation.mutateAsync(config._id);
+			await deleteMutation.mutateAsync(config.id);
 			navigate("/template");
 		}
 	};

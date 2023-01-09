@@ -4,7 +4,7 @@ import { DataTemplate } from "../types";
 type Props = { template: DataTemplate };
 
 const DataTemplateGroupItem = ({ template }: Props) => {
-	const { _id: templateId } = template;
+	const { id: templateId } = template;
 
 	return (
 		<div className="my-6 rounded border bg-gray-300 px-4 py-4">

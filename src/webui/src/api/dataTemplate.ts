@@ -50,7 +50,7 @@ export async function updateDataTemplate(dt: DataTemplate): Promise<HateoasRespo
 		throw new Error(result.error.message);
 	}
 
-	const { _id: id, ...data } = result.data;
+	const { id, ...data } = result.data;
 	if (!id) {
 		throw new Error("Could not determine DataTemplate to update");
 	}
