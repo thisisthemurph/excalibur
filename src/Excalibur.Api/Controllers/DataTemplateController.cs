@@ -56,7 +56,8 @@ public class DataTemplateController : ControllerBase
 
         try
         {
-            var created = await _dataTemplateRepo.CreateAsync(_mapper.Map<DataTemplate>(dataTemplate));
+            var entity = _mapper.Map<DataTemplate>(dataTemplate);
+            var created = await _dataTemplateRepo.CreateAsync(entity);
             return Created(nameof(Get), new { id = created.Id });
         }
         catch (ArgumentException e)
@@ -70,14 +71,16 @@ public class DataTemplateController : ControllerBase
     }
 
     [HttpPost("{id}")]
-    public async Task<IActionResult> AddColumn(string id, [FromBody] DataTemplateCreateColumnRequest column, CancellationToken cancellationToken)
+    public async Task<IActionResult> AddColumn(string id, [FromBody] DataTemplateColumnRequest column, CancellationToken cancellationToken)
     {
         if(!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
-        var success = await _dataTemplateRepo.AddColumnAsync(id, column, cancellationToken);
+        var entity = _mapper.Map<DataTemplateColumn>(column);
+
+        var success = await _dataTemplateRepo.AddColumnAsync(id, entity, cancellationToken);
         if (!success)
         {
             return NotFound($"DataTemplate with ID `{id}` does not exist");

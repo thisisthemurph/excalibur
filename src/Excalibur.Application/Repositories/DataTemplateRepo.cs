@@ -4,6 +4,7 @@ using MongoDB.Driver.Linq;
 using Excalibur.Application.Common;
 using Excalibur.Domain.Entities;
 using Excalibur.Application.DTOs.Requests;
+using Excalibur.Domain.Enums;
 
 namespace Excalibur.Application.Repositories;
 
@@ -42,17 +43,10 @@ public class DataTemplateRepo : IDataTemplateRepo
         return dataTemplate;
     }
 
-    public async Task<bool> AddColumnAsync(string id, DataTemplateCreateColumnRequest column, CancellationToken cancellationToken = default)
+    public async Task<bool> AddColumnAsync(string id, DataTemplateColumn column, CancellationToken cancellationToken = default)
     {
-        var entity = new DataTemplateColumn
-        {
-            OriginalName = column.OriginalName,
-            PrettyName = column.PrettyName,
-            DataType = column.DataType,
-        };
-
         var filter = Builders<DataTemplate>.Filter.Eq("Id", id);
-        var update = Builders<DataTemplate>.Update.AddToSet("Columns", entity);
+        var update = Builders<DataTemplate>.Update.AddToSet("Columns", column);
 
         var result = await _dataTemplateCollection
             .UpdateOneAsync(filter, update, new UpdateOptions() { IsUpsert = true }, cancellationToken);

@@ -4,7 +4,7 @@ using Excalibur.Domain.Entities;
 namespace Excalibur.Application.Repositories;
 public interface IDataTemplateRepo
 {
-    Task<bool> AddColumnAsync(string id, DataTemplateCreateColumnRequest column, CancellationToken cancellationToken = default);
+    Task<bool> AddColumnAsync(string id, DataTemplateColumn column, CancellationToken cancellationToken = default);
     Task<DataTemplate> AddFileMetadata(string dataTemplateId, DataTemplateAddFileMetadataRequest metadata, CancellationToken cancellationToken = default);
     Task<DataTemplate> CreateAsync(DataTemplate dataTemplate);
     Task<bool> DeleteAsync(string id, CancellationToken cancellationToken = default);

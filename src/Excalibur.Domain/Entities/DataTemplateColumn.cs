@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using Excalibur.Domain.Enums;
 
 namespace Excalibur.Domain.Entities;
 
@@ -16,5 +17,5 @@ public class DataTemplateColumn
     public string PrettyName { get; set; }
 
     [BsonElement("dataType")]
-    public string DataType { get; set; }
+    public ColumnDataType DataType { get; set; }
 }
